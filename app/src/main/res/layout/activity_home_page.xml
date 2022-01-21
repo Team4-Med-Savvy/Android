@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomePage">
+
+    <androidx.appcompat.widget.Toolbar
+        android:elevation="4dp"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/teal_700"
+        android:paddingStart="20dp">
+
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="12">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="MedSavvy"
+                    android:textSize="26sp"
+                    android:textColor="@color/white"
+                    android:layout_weight="10"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_cart"
+                    android:id="@+id/iv_home_cart"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_login"
+                    android:id="@+id/iv_home_login"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <EditText
+        android:id="@+id/et_home_search"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:hint="Search"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:drawableLeft="@drawable/search"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="48dp"
+        android:background="@color/white"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.051"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_home_search"
+        app:srcCompat="@drawable/ayurveda" />
+
+    <ImageButton
+        android:id="@+id/imageButton3"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="48dp"
+        android:background="@color/white"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.018"
+        app:layout_constraintStart_toEndOf="@+id/imageButton2"
+        app:layout_constraintTop_toBottomOf="@+id/et_home_search"
+        app:srcCompat="@drawable/covid" />
+
+    <ImageButton
+        android:id="@+id/imageButton4"
+        android:layout_width="99dp"
+        android:layout_height="99dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/white"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/imageButton3"
+        app:layout_constraintTop_toBottomOf="@+id/et_home_search"
+        app:srcCompat="@drawable/surgical" />
+
+    <ImageButton
+        android:id="@+id/imageButton5"
+        android:layout_width="142dp"
+        android:layout_height="105dp"
+        android:layout_marginTop="64dp"
+        android:background="@color/white"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.182"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton2"
+        app:srcCompat="@drawable/skin" />
+
+    <ImageButton
+        android:id="@+id/imageButton6"
+        android:layout_width="138dp"
+        android:layout_height="104dp"
+        android:layout_marginTop="64dp"
+        android:background="@color/white"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageButton5"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton4"
+        app:srcCompat="@drawable/pet" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
