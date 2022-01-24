@@ -11,8 +11,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MedSavvy">
+
+        <activity android:name=".Cart"></activity>
+        <activity android:name=".Products" />
+
         <activity android:name=".Profile"></activity>
         <activity android:name=".ProductDetail" />
+
         <activity android:name=".HomePage" />
         <activity android:name=".SignUp" />
         <activity android:name=".SplashScreen">

@@ -4,15 +4,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
+
+        app:cardElevation="5dp"
+        app:cardCornerRadius="10dp"
+        app:cardBackgroundColor="@color/teal_700"
+        android:outlineSpotShadowColor="@color/black_custom"
+
         android:backgroundTint="@color/teal_700"
         app:cardElevation="5dp"
         app:cardCornerRadius="10dp"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,6 +46,7 @@
                 android:layout_marginTop="20dp"
                 android:text="Product name"
                 android:textSize="24sp"
+                android:textColor="@color/white"
                 android:gravity="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
@@ -49,6 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:textColor="@color/white"
                 android:textSize="24sp"
                 android:text="Price"
                 android:gravity="center"
