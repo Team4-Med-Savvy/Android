@@ -4,10 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.medsavvy.RecycleView.ApiProduct;
@@ -16,60 +13,21 @@ import com.example.medsavvy.RecycleView.adapter.RecommendAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomePage extends AppCompatActivity implements RecommendAdapter.IApiResponseClick{
+public class Cart extends AppCompatActivity implements RecommendAdapter.IApiResponseClick {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_page);
+        setContentView(R.layout.activity_cart);
         displayLocalRecyclerView();
-        findViewById(R.id.iv_home_login).setOnClickListener(v -> {
-            Intent i=new Intent(HomePage.this,Login.class);
-            startActivity(i);
-        });
-        findViewById(R.id.iv_home_cart).setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                startActivity(new Intent(HomePage.this, Cart.class));
-            }
-        });
-        findViewById(R.id.iv_ayur_care).setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                startActivity(new Intent(HomePage.this, Products.class));
-            }
-        });
-        findViewById(R.id.iv_covid).setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                startActivity(new Intent(HomePage.this, Products.class));
-            }
-        });
-        findViewById(R.id.iv_surgical).setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                startActivity(new Intent(HomePage.this, Products.class));
-            }
-        });
-        findViewById(R.id.iv_skin).setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                startActivity(new Intent(HomePage.this, Products.class));
-            }
-        });
-        findViewById(R.id.iv_pet).setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                startActivity(new Intent(HomePage.this, Products.class));
-            }
-        });
-
     }
-
-
     private  void displayLocalRecyclerView(){
         List<ApiProduct> userDataList=new ArrayList<>();
         generateUserData(userDataList);
         RecyclerView recyclerView=findViewById(R.id.recycle);
-        RecommendAdapter recycleViewAdapter=new RecommendAdapter(userDataList,HomePage.this);
-        LinearLayoutManager  HorizontalLayout= new LinearLayoutManager(HomePage.this,LinearLayoutManager.HORIZONTAL,false);
-
-
-        recyclerView.setLayoutManager(HorizontalLayout);
+        RecommendAdapter recycleViewAdapter=new RecommendAdapter(userDataList,Cart.this);
+        LinearLayoutManager VerticalLayout= new LinearLayoutManager(Cart.this,LinearLayoutManager.VERTICAL,false);
+        recyclerView.setLayoutManager(VerticalLayout);
         recyclerView.setAdapter(recycleViewAdapter);
     }
 
@@ -89,7 +47,7 @@ public class HomePage extends AppCompatActivity implements RecommendAdapter.IApi
 
     @Override
     public void onUserClick(ApiProduct userDatamodel) {
-        Toast.makeText(this, "Image Clicked for" + userDatamodel, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "You have purchased this" + userDatamodel, Toast.LENGTH_SHORT).show();
 
     }
 }
