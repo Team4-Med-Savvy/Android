@@ -15,6 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:background="@color/teal_700"
         app:title="Products"
+        app:titleTextColor="@color/white"
         android:paddingStart="20dp"/>
 
     <androidx.recyclerview.widget.RecyclerView

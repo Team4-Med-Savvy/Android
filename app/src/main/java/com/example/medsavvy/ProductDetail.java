@@ -29,6 +29,11 @@ public class ProductDetail extends AppCompatActivity {
             startActivity(i);
         });
 
+        findViewById(R.id.iv_home_cart).setOnClickListener(v -> {
+            Intent i=new Intent(ProductDetail.this,Cart.class);
+            startActivity(i);
+        });
+
         Button increment=findViewById(R.id.bn_increment);
         Button decrement=findViewById(R.id.bn_decrement);
         TextView display=findViewById(R.id.tv_quant);
@@ -39,10 +44,8 @@ public class ProductDetail extends AppCompatActivity {
         });
 
         decrement.setOnClickListener(v -> {
-            if(count<0)count=0;
-            else
                 count--;
-
+            if(count<0)count=0;
             display.setText(""+count);
         });
 

@@ -8,8 +8,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.example.medsavvy.RecycleView.ApiProduct;
 import com.example.medsavvy.RecycleView.adapter.RecommendAdapter;
+import com.example.medsavvy.RecycleView.model.ApiProduct;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +49,8 @@ public class Products extends AppCompatActivity implements RecommendAdapter.IApi
 
     @Override
     public void onUserClick(ApiProduct userDatamodel) {
-        Toast.makeText(this, "Image Clicked for" + userDatamodel, Toast.LENGTH_SHORT).show();
-
+        Intent intent=new Intent(this,ProductDetail.class);
+        intent.putExtra("imageUrl",userDatamodel.getImage());
+        startActivity(intent);
     }
 }
