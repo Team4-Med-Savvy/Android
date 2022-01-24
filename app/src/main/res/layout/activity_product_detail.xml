@@ -88,9 +88,9 @@
         android:id="@+id/bn_add_to_cart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
-        android:text="Add To Cart"
+        android:layout_marginTop="132dp"
         android:backgroundTint="@color/teal_700"
+        android:text="Add To Cart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.223"
         app:layout_constraintStart_toStartOf="parent"
@@ -100,12 +100,60 @@
         android:id="@+id/bn_buy_now"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
+        android:layout_marginTop="132dp"
+        android:backgroundTint="@color/teal_700"
         android:text="Buy Now"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.438"
+        app:layout_constraintStart_toEndOf="@+id/bn_add_to_cart"
+        app:layout_constraintTop_toBottomOf="@+id/tv_prod_descrip" />
+
+    <TextView
+        android:id="@+id/tv_quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Quantity"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.049"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_prod_descrip" />
+
+    <Button
+        android:id="@+id/bn_decrement"
+        android:layout_width="60dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="24dp"
+        android:text="-"
+        android:backgroundTint="@color/teal_700"
+        app:layout_constraintEnd_toStartOf="@+id/bn_increment"
+        app:layout_constraintHorizontal_bias="0.648"
+        app:layout_constraintStart_toEndOf="@+id/tv_quant"
+        app:layout_constraintTop_toBottomOf="@+id/tv_prod_descrip" />
+
+    <TextView
+        android:id="@+id/tv_quant"
+        android:layout_width="60dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="12dp"
+        android:text="0"
+        android:gravity="center"
+        app:layout_constraintEnd_toStartOf="@+id/bn_increment"
+        app:layout_constraintHorizontal_bias="0.263"
+        app:layout_constraintStart_toEndOf="@+id/tv_quantity"
+        app:layout_constraintTop_toBottomOf="@+id/tv_prod_descrip" />
+
+    <Button
+        android:id="@+id/bn_increment"
+        android:layout_width="60dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:text="+"
         android:backgroundTint="@color/teal_700"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.463"
-        app:layout_constraintStart_toEndOf="@+id/bn_add_to_cart"
         app:layout_constraintTop_toBottomOf="@+id/tv_prod_descrip" />
 
 

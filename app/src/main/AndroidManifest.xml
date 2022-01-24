@@ -11,8 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MedSavvy">
-        <activity android:name=".ProductDetail"></activity>
-        <activity android:name=".HomePage"></activity>
+        <activity android:name=".Profile"></activity>
+        <activity android:name=".ProductDetail" />
+        <activity android:name=".HomePage" />
         <activity android:name=".SignUp" />
         <activity android:name=".SplashScreen">
             <intent-filter>

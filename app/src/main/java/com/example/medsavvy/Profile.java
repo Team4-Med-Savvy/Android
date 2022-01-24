@@ -6,36 +6,34 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
-import com.example.medsavvy.RecycleView.model.ApiProduct;
 import com.example.medsavvy.RecycleView.adapter.RecommendAdapter;
+import com.example.medsavvy.RecycleView.model.ApiProduct;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomePage extends AppCompatActivity implements RecommendAdapter.IApiResponseClick{
+public class Profile extends AppCompatActivity implements RecommendAdapter.IApiResponseClick{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_page);
+        setContentView(R.layout.activity_profile);
         displayLocalRecyclerView();
-        findViewById(R.id.iv_home_profile).setOnClickListener(v -> {
-            Intent i=new Intent(HomePage.this,Profile.class);
+
+        findViewById(R.id.iv_profile_login).setOnClickListener(v -> {
+            Intent i=new Intent(Profile.this,Login.class);
             startActivity(i);
         });
-
-
     }
 
 
     private  void displayLocalRecyclerView(){
         List<ApiProduct> userDataList=new ArrayList<>();
         generateUserData(userDataList);
-        RecyclerView recyclerView=findViewById(R.id.recycle);
-        RecommendAdapter recycleViewAdapter=new RecommendAdapter(userDataList,HomePage.this);
-        LinearLayoutManager  HorizontalLayout= new LinearLayoutManager(HomePage.this,LinearLayoutManager.HORIZONTAL,false);
+        RecyclerView recyclerView=findViewById(R.id.recycleList);
+        RecommendAdapter recycleViewAdapter=new RecommendAdapter(userDataList,Profile.this);
+        LinearLayoutManager HorizontalLayout= new LinearLayoutManager(Profile.this,LinearLayoutManager.HORIZONTAL,false);
 
 
         recyclerView.setLayoutManager(HorizontalLayout);
@@ -60,8 +58,8 @@ public class HomePage extends AppCompatActivity implements RecommendAdapter.IApi
 
     @Override
     public void onUserClick(ApiProduct userDatamodel) {
-    Intent intent=new Intent(HomePage.this,ProductDetail.class);
-    intent.putExtra("imageUrl",userDatamodel.getImage());
-    startActivity(intent);
+        Intent intent=new Intent(Profile.this,ProductDetail.class);
+        intent.putExtra("imageUrl",userDatamodel.getImage());
+        startActivity(intent);
     }
 }
