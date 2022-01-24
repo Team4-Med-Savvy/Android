@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.widget.Toast;
 
-
 import com.example.medsavvy.RecycleView.adapter.RecommendAdapter;
 import com.example.medsavvy.RecycleView.model.ApiProduct;
 
