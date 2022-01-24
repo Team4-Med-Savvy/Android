@@ -11,10 +11,16 @@
         android:scrollbarAlwaysDrawVerticalTrack="true"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
+
         app:cardElevation="5dp"
         app:cardCornerRadius="10dp"
         app:cardBackgroundColor="@color/teal_700"
         android:outlineSpotShadowColor="@color/black_custom"
+
+        android:backgroundTint="@color/teal_700"
+        app:cardElevation="5dp"
+        app:cardCornerRadius="10dp"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

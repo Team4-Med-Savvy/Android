@@ -1,4 +1,4 @@
-package com.example.medsavvy.RecycleView;
+package com.example.medsavvy.RecycleView.model;
 
 public class ApiProduct {
     private String name;
