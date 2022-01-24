@@ -8,8 +8,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.example.medsavvy.RecycleView.ApiProduct;
+
 import com.example.medsavvy.RecycleView.adapter.RecommendAdapter;
+import com.example.medsavvy.RecycleView.model.ApiProduct;
 
 import java.util.ArrayList;
 import java.util.List;
