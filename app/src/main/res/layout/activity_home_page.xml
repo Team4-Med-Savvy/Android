@@ -50,7 +50,7 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <EditText
+    <androidx.appcompat.widget.SearchView
         android:id="@+id/et_home_search"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/iv_ayur_care"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="48dp"
@@ -80,7 +80,7 @@
         app:srcCompat="@drawable/ayurveda" />
 
     <ImageButton
-        android:id="@+id/imageButton3"
+        android:id="@+id/iv_covid"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginStart="36dp"
@@ -89,12 +89,12 @@
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.018"
-        app:layout_constraintStart_toEndOf="@+id/imageButton2"
+        app:layout_constraintStart_toEndOf="@+id/iv_ayur_care"
         app:layout_constraintTop_toBottomOf="@+id/et_home_search"
         app:srcCompat="@drawable/covid" />
 
     <ImageButton
-        android:id="@+id/imageButton4"
+        android:id="@+id/iv_surgical"
         android:layout_width="99dp"
         android:layout_height="99dp"
         android:layout_marginStart="36dp"
@@ -104,12 +104,12 @@
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/imageButton3"
+        app:layout_constraintStart_toEndOf="@+id/iv_covid"
         app:layout_constraintTop_toBottomOf="@+id/et_home_search"
         app:srcCompat="@drawable/surgical" />
 
     <ImageButton
-        android:id="@+id/imageButton5"
+        android:id="@+id/iv_skin"
         android:layout_width="142dp"
         android:layout_height="105dp"
         android:layout_marginTop="64dp"
@@ -118,19 +118,31 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.182"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton2"
+        app:layout_constraintTop_toBottomOf="@+id/iv_ayur_care"
         app:srcCompat="@drawable/skin" />
 
     <ImageButton
-        android:id="@+id/imageButton6"
+        android:id="@+id/iv_pet"
         android:layout_width="138dp"
         android:layout_height="104dp"
         android:layout_marginTop="64dp"
         android:background="@color/white"
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageButton5"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton4"
+        app:layout_constraintStart_toEndOf="@+id/iv_skin"
+        app:layout_constraintTop_toBottomOf="@+id/iv_surgical"
         app:srcCompat="@drawable/pet" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="452dp"
+        android:id="@+id/recycle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        android:scrollbars="horizontal"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
