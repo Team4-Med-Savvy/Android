@@ -11,9 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.medsavvy.R;
-import com.example.medsavvy.RecycleView.ApiProduct;
+import com.example.medsavvy.RecycleView.model.ApiProduct;
 
-import java.net.URI;
 import java.util.List;
 
 public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.ViewHolder>{

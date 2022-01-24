@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.example.medsavvy.RecycleView.ApiProduct;
+import com.example.medsavvy.RecycleView.model.ApiProduct;
 import com.example.medsavvy.RecycleView.adapter.RecommendAdapter;
 
 import java.util.ArrayList;
@@ -26,6 +26,7 @@ public class HomePage extends AppCompatActivity implements RecommendAdapter.IApi
             startActivity(i);
         });
 
+
     }
 
 
@@ -39,6 +40,8 @@ public class HomePage extends AppCompatActivity implements RecommendAdapter.IApi
 
         recyclerView.setLayoutManager(HorizontalLayout);
         recyclerView.setAdapter(recycleViewAdapter);
+
+
     }
 
 
@@ -57,7 +60,8 @@ public class HomePage extends AppCompatActivity implements RecommendAdapter.IApi
 
     @Override
     public void onUserClick(ApiProduct userDatamodel) {
-        Toast.makeText(this, "Image Clicked for" + userDatamodel, Toast.LENGTH_SHORT).show();
-
+    Intent intent=new Intent(HomePage.this,ProductDetail.class);
+    intent.putExtra("imageUrl",userDatamodel.getImage());
+    startActivity(intent);
     }
 }
