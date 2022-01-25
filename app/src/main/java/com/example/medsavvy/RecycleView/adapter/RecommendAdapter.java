@@ -35,10 +35,11 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ApiProduct apiProduct = apiResponseList.get(position);
+        System.out.println("Name "+apiProduct.getName());
         holder.tvName.setText(apiProduct.getName());
         holder.tvPrice.setText(apiProduct.getPrice()+"");
 
-        Glide.with(holder.ivProduct.getContext()).load(apiProduct.getImage()).placeholder(R.drawable.ic_login).into(holder.ivProduct);
+//        Glide.with(holder.ivProduct.getContext()).load(apiProduct.getImage()).placeholder(R.drawable.ic_login).into(holder.ivProduct);
         holder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

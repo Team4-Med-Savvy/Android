@@ -38,7 +38,7 @@ public class Products extends AppCompatActivity implements RecommendAdapter.IApi
         IPostProductApi iPostProductApi=retrofit.create(IPostProductApi.class);
         Intent intent=getIntent();
         String cate= intent.getExtras().getString("category");
-        Call<List<ProductDto>> productresponse=iPostProductApi.getProduct(cate);
+        Call<List<ProductDto>> productresponse=iPostProductApi.getProduct("c4");
         productresponse.enqueue(new Callback<List<ProductDto>>() {
             @Override
             public void onResponse(Call<List<ProductDto>> call, Response<List<ProductDto>> responseprod) {
