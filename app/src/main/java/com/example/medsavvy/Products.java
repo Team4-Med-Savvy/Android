@@ -12,8 +12,8 @@ import android.widget.Toast;
 import com.example.medsavvy.RecycleView.adapter.RecommendAdapter;
 import com.example.medsavvy.RecycleView.model.ApiProduct;
 import com.example.medsavvy.retrofit.model.ProductDto;
-import com.example.medsavvy.retrofit.network.IPostProductApi;
 import com.example.medsavvy.retrofit.networkmanager.ProductRetrofitBuilder;
+import  com.example.medsavvy.retrofit.network.IPostProductApi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +35,7 @@ public class Products extends AppCompatActivity implements RecommendAdapter.IApi
 
     private void initApi(){
         Retrofit retrofit= ProductRetrofitBuilder.getInstance();
+
         IPostProductApi iPostProductApi=retrofit.create(IPostProductApi.class);
         Intent intent=getIntent();
         String cate= intent.getExtras().getString("category");
