@@ -34,28 +34,37 @@ public class HomePage extends AppCompatActivity implements RecommendAdapter.IApi
         });
         findViewById(R.id.iv_ayur_care).setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                startActivity(new Intent(HomePage.this, Products.class));
-            }
+
+                Intent intent=new Intent(HomePage.this,Products.class);
+                intent.putExtra("category","Ayurvedic_care");
+                startActivity(intent);               }
         });
         findViewById(R.id.iv_covid).setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                startActivity(new Intent(HomePage.this, Products.class));
-            }
+                Intent intent=new Intent(HomePage.this,Products.class);
+                intent.putExtra("category","Covid_essential");
+                startActivity(intent);            }
         });
         findViewById(R.id.iv_surgical).setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                startActivity(new Intent(HomePage.this, Products.class));
-            }
+
+                Intent intent=new Intent(HomePage.this,Products.class);
+                intent.putExtra("category","Surgicals");
+                startActivity(intent);               }
         });
         findViewById(R.id.iv_skin).setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                startActivity(new Intent(HomePage.this, Products.class));
-            }
+
+                Intent intent=new Intent(HomePage.this,Products.class);
+                intent.putExtra("category","Skin_care");
+                startActivity(intent);               }
         });
         findViewById(R.id.iv_pet).setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                startActivity(new Intent(HomePage.this, Products.class));
-            }
+
+                Intent intent=new Intent(HomePage.this,Products.class);
+                intent.putExtra("category","Personal_care");
+                startActivity(intent);               }
         });
 
 
