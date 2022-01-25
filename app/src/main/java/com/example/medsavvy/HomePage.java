@@ -24,7 +24,7 @@ public class HomePage extends AppCompatActivity implements RecommendAdapter.IApi
         setContentView(R.layout.activity_home_page);
         displayLocalRecyclerView();
         findViewById(R.id.iv_home_profile).setOnClickListener(v -> {
-            Intent i=new Intent(HomePage.this,Profile.class);
+            Intent i=new Intent(HomePage.this,Login.class);
             startActivity(i);
         });
         findViewById(R.id.iv_home_cart).setOnClickListener(new View.OnClickListener(){
@@ -55,6 +55,20 @@ public class HomePage extends AppCompatActivity implements RecommendAdapter.IApi
         findViewById(R.id.iv_pet).setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 startActivity(new Intent(HomePage.this, Products.class));
+            }
+        });
+        findViewById(R.id.iv_home_bottom).setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                startActivity(new Intent(HomePage.this, HomePage.class));
+            }
+        });
+        findViewById(R.id.iv_cart_bottom).setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                startActivity(new Intent(HomePage.this,Cart.class));
+            }
+        });findViewById(R.id.iv_profile_bottom).setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                startActivity(new Intent(HomePage.this, Profile.class));
             }
         });
 

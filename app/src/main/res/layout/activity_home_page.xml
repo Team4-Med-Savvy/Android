@@ -38,13 +38,14 @@
                     android:id="@+id/iv_home_cart"
                     android:layout_weight="1"
                     android:layout_gravity="center"/>
+
                 <ImageView
+                    android:id="@+id/iv_home_profile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_person"
-                    android:id="@+id/iv_home_profile"
+                    android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:layout_gravity="center"/>
+                    android:src="@drawable/ic_login" />
             </LinearLayout>
 
 
@@ -86,12 +87,12 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginStart="36dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="60dp"
         android:background="@color/white"
         android:backgroundTint="@color/white"
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.018"
+        app:layout_constraintHorizontal_bias="0.189"
         app:layout_constraintStart_toEndOf="@+id/iv_ayur_care"
         app:layout_constraintTop_toBottomOf="@+id/et_home_search"
         app:srcCompat="@drawable/covid" />
@@ -116,7 +117,7 @@
         android:id="@+id/iv_skin"
         android:layout_width="142dp"
         android:layout_height="105dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="40dp"
         android:background="@color/white"
         android:backgroundTint="@color/white"
         android:scaleType="fitCenter"
@@ -126,11 +127,12 @@
         app:layout_constraintTop_toBottomOf="@+id/iv_ayur_care"
         app:srcCompat="@drawable/skin" />
 
+
     <ImageButton
         android:id="@+id/iv_pet"
         android:layout_width="138dp"
         android:layout_height="104dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="40dp"
         android:background="@color/white"
         android:backgroundTint="@color/white"
         android:scaleType="fitCenter"
@@ -139,17 +141,71 @@
         app:layout_constraintTop_toBottomOf="@+id/iv_surgical"
         app:srcCompat="@drawable/pet" />
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycle"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="452dp"
         android:scrollbars="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/toolbarhome"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+         />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarhome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/teal_700"
+        android:elevation="4dp"
+
+        android:paddingStart="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recycle"
+        app:layout_constraintVertical_bias="1.0">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="12">
+
+            <ImageView
+                android:id="@+id/iv_home_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="4"
+                app:srcCompat="@android:drawable/ic_menu_agenda"/>
+
+            <ImageView
+                android:id="@+id/iv_cart_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="4"
+                android:src="@drawable/ic_cart" />
+
+
+
+            <ImageView
+                android:id="@+id/iv_profile_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="4"
+                android:src="@drawable/ic_person" />
+        </LinearLayout>
+
+
+    </androidx.appcompat.widget.Toolbar>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
