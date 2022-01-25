@@ -44,14 +44,14 @@ public class Products extends AppCompatActivity implements RecommendAdapter.IApi
             public void onResponse(Call<List<ProductDto>> call, Response<List<ProductDto>> responseprod) {
                 List<ApiProduct> userDataList=new ArrayList<>();
 
-//                for(int i=0;i<5;i++)
-//                {
-                    String name=responseprod.body().get(0).getTitle();
-                    String image=responseprod.body().get(0).getImage();
-                    Double price=responseprod.body().get(0).getPrice();
+                for(int i=0;i<responseprod.body().size();i++)
+                 {
+                    String name=responseprod.body().get(i).getTitle();
+                    String image=responseprod.body().get(i).getImage();
+                    Double price=responseprod.body().get(i).getPrice();
                     userDataList.add(new ApiProduct(name,image,price));
 
-//                }
+               }
 
                 RecyclerView recyclerView=findViewById(R.id.recycles);
                 RecommendAdapter recycleViewAdapter=new RecommendAdapter(userDataList,Products.this);
