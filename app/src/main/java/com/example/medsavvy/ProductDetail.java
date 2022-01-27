@@ -44,20 +44,7 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
             startActivity(i);
         });
 
-        Button increment=findViewById(R.id.bn_increment);
-        Button decrement=findViewById(R.id.bn_decrement);
-        TextView display=findViewById(R.id.tv_quant);
 
-        increment.setOnClickListener(v -> {
-            count++;
-            display.setText(""+count);
-        });
-
-        decrement.setOnClickListener(v -> {
-                count--;
-            if(count<0)count=0;
-            display.setText(""+count);
-        });
 
     }
     private  void displayLocalRecyclerView(){
