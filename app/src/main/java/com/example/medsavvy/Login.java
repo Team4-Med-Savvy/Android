@@ -35,7 +35,6 @@ import retrofit2.Retrofit;
 public class Login extends AppCompatActivity {
     GoogleSignInClient mGoogleSignInClient;
     private static int RC_SIGN_IN = 100;
-    private static int flag=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,7 +131,7 @@ public class Login extends AppCompatActivity {
         AuthDto authDto=new AuthDto();
         authDto.setUsername(etemail.getText().toString());
         authDto.setPassword(etpass.getText().toString());
-
+        System.out.println(authDto.getUsername());
         return authDto;
 
     }
@@ -142,14 +141,22 @@ public class Login extends AppCompatActivity {
         IPostUserApi iPostUserApi=retrofit.create(IPostUserApi.class);
         Call<ResponseDto> response=iPostUserApi.generateToken(authDto);
 
+
         response.enqueue(new Callback<ResponseDto>() {
             @Override
             public void onResponse(Call<ResponseDto> call, Response<ResponseDto> response) {
                 Toast.makeText(Login.this,"Success",Toast.LENGTH_SHORT).show();
+                SharedPreferences sharedPreferences = getSharedPreferences("com.example.medsavvy", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+
+
+                editor.putString("points", response.body().getPoints().toString());
+                editor.putString("name", response.body().getName());
+                editor.putString("em", response.body().getEmail());
+                editor.apply();
                 Intent i = new Intent(Login.this, HomePage.class);
                 startActivity(i);
                 System.out.println(response);
-                flag=1;
 
             }
 

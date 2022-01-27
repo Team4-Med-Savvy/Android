@@ -44,6 +44,7 @@ public class SignUp extends AppCompatActivity {
                 initApi(createRequest());
                 Intent k = new Intent(SignUp.this, Login.class);
                 startActivity(k);
+                finish();
             }
         });
 

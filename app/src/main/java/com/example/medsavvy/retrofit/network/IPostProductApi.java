@@ -1,6 +1,7 @@
 package com.example.medsavvy.retrofit.network;
 
 
+import com.example.medsavvy.retrofit.model.ProductDetailDto;
 import com.example.medsavvy.retrofit.model.ProductDto;
 
 import java.util.List;
@@ -16,6 +17,9 @@ public interface IPostProductApi {
 
     @GET("product/recommend")
     Call<List<ProductDto>> getrecommend();
+
+    @GET("product/productdetail/{pid}/{mid}")
+    Call<ProductDetailDto> finddetail(@Path(value = "pid") String pid, @Path(value = "mid") String mid);
 //
 //    @GET("product/{id}")
 //    Call<ProductDto> getProductDetails(@Path("id") String id);

@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
@@ -30,7 +32,7 @@ import java.util.List;
 public class Profile extends AppCompatActivity implements OrderAdapter.IApiResponseClick{
     GoogleSignInClient mGoogleSignInClient;
     private static int RC_SIGN_IN = 100;
-    TextView Name,Email;
+    TextView Name,Email,Points;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +40,12 @@ public class Profile extends AppCompatActivity implements OrderAdapter.IApiRespo
         displayLocalRecyclerView();
         Name=findViewById(R.id.tv_profile_name);
         Email=findViewById(R.id.tv_profile_email);
+        Points=findViewById(R.id.tv_profile_points);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("com.example.medsavvy", Context.MODE_PRIVATE);
+        Name.setText(sharedPreferences.getString("name","customer"));
+        Email.setText(sharedPreferences.getString("em","email"));
+        Points.setText(sharedPreferences.getString("points","0"));
 
         findViewById(R.id.bn_log_out).setOnClickListener(v -> {
             Intent i=new Intent(Profile.this,Login.class);
