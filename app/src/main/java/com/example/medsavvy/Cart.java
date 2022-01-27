@@ -5,30 +5,33 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.medsavvy.RecycleView.adapter.RecommendAdapter;
+import com.example.medsavvy.RecycleView.adapter.CartAdapter;
 import com.example.medsavvy.RecycleView.model.ApiProduct;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Cart extends AppCompatActivity implements RecommendAdapter.IApiResponseClick {
-
+public class Cart extends AppCompatActivity implements CartAdapter.IApiResponseClick {
+int count=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
         displayLocalRecyclerView();
+
     }
     private  void displayLocalRecyclerView(){
         List<ApiProduct> userDataList=new ArrayList<>();
         generateUserData(userDataList);
         RecyclerView recyclerView=findViewById(R.id.recycle);
-        RecommendAdapter recycleViewAdapter=new RecommendAdapter(userDataList,Cart.this);
+        CartAdapter cartAdapter=new CartAdapter(userDataList,Cart.this);
         LinearLayoutManager VerticalLayout= new LinearLayoutManager(Cart.this,LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(VerticalLayout);
-        recyclerView.setAdapter(recycleViewAdapter);
+        recyclerView.setAdapter(cartAdapter);
     }
 
 

@@ -30,7 +30,6 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
-        //displayLocalRecyclerView();
         ImageView imageurl=findViewById(R.id.iv_prod_detail);
         TextView productname=findViewById(R.id.tv_product_name);
 
@@ -50,38 +49,13 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
             startActivity(i);
         });
 
-//        Button increment=findViewById(R.id.bn_increment);
-//        Button decrement=findViewById(R.id.bn_decrement);
-//        TextView display=findViewById(R.id.tv_quant);
-//
-//        increment.setOnClickListener(v -> {
-//            count++;
-//            display.setText(""+count);
-//        });
-//
-//        decrement.setOnClickListener(v -> {
-//                count--;
-//            if(count<0)count=0;
-//            display.setText(""+count);
-//        });
+
         ListView listView= (ListView)findViewById(R.id.id_list);
         CustomAdapter customAdapter=new CustomAdapter();
         listView.setAdapter(customAdapter);
 
+
     }
-//    private  void displayLocalRecyclerView(){
-//        List<ApiProduct> userDataList=new ArrayList<>();
-//        generateUserData(userDataList);
-//        //RecyclerView recyclerView=findViewById(R.id.recycle_merch);
-//        RecommendAdapter recycleViewAdapter=new RecommendAdapter(userDataList,ProductDetail.this);
-//        LinearLayoutManager HorizontalLayout= new LinearLayoutManager(ProductDetail.this,LinearLayoutManager.HORIZONTAL,false);
-//
-//
-//        //recyclerView.setLayoutManager(HorizontalLayout);
-//        //recyclerView.setAdapter(recycleViewAdapter);
-//
-//
-//    }
 
 
     private void generateUserData(List<ApiProduct> userDataList) {

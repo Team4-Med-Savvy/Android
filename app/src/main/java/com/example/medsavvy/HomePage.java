@@ -32,7 +32,7 @@ public class HomePage extends AppCompatActivity implements RecommendAdapter.IApi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
         initApi();
-       // displayLocalRecyclerView();
+
         findViewById(R.id.iv_home_profile).setOnClickListener(v -> {
             Intent i=new Intent(HomePage.this,Login.class);
             startActivity(i);
@@ -113,7 +113,8 @@ public class HomePage extends AppCompatActivity implements RecommendAdapter.IApi
 
                 }
 
-                RecyclerView recyclerView=findViewById(R.id.recycle_home);
+
+                RecyclerView recyclerView=findViewById(R.id.recyclehome);
                 RecommendAdapter recycleViewAdapter=new RecommendAdapter(userDataList,HomePage.this);
                 LinearLayoutManager  HorizontalLayout= new LinearLayoutManager(HomePage.this,LinearLayoutManager.HORIZONTAL,false);
                 recyclerView.setLayoutManager(HorizontalLayout);
