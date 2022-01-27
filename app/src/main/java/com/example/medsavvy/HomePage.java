@@ -109,7 +109,8 @@ public class HomePage extends AppCompatActivity implements RecommendAdapter.IApi
                     String name=responseprod.body().get(i).getTitle();
                     String image=responseprod.body().get(i).getImage();
                     Double price=responseprod.body().get(i).getPrice();
-                    userDataList.add(new ApiProduct(name,image,price));
+                    String id=responseprod.body().get(i).getId();
+                    userDataList.add(new ApiProduct(name,image,price,id));
 
                 }
 
@@ -136,6 +137,7 @@ public class HomePage extends AppCompatActivity implements RecommendAdapter.IApi
     Intent intent=new Intent(HomePage.this,ProductDetail.class);
     intent.putExtra("imageUrl",userDatamodel.getImage());
     intent.putExtra("productName",userDatamodel.getName());
+    intent.putExtra("productId",userDatamodel.getId());
         startActivity(intent);
     }
 }
