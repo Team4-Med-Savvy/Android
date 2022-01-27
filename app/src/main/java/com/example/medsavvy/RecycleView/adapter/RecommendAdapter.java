@@ -35,6 +35,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ApiProduct apiProduct = apiResponseList.get(position);
+        System.out.println("Name "+apiProduct.getName());
         holder.tvName.setText(apiProduct.getName());
         holder.tvPrice.setText(apiProduct.getPrice()+"");
 

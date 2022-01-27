@@ -6,13 +6,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.medsavvy.RecycleView.adapter.RecommendAdapter;
 import com.example.medsavvy.RecycleView.model.ApiProduct;
+import com.example.medsavvy.retrofit.model.ProductDto;
+import com.example.medsavvy.retrofit.networkmanager.ProductRetrofitBuilder;
+import  com.example.medsavvy.retrofit.network.IPostProductApi;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class Products extends AppCompatActivity implements RecommendAdapter.IApiResponseClick {
 
@@ -20,7 +29,46 @@ public class Products extends AppCompatActivity implements RecommendAdapter.IApi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_products);
-        displayLocalRecyclerView();
+      //  displayLocalRecyclerView();
+        initApi();
+    }
+
+    private void initApi(){
+        Retrofit retrofit= ProductRetrofitBuilder.getInstance();
+
+        IPostProductApi iPostProductApi=retrofit.create(IPostProductApi.class);
+        Intent intent=getIntent();
+        String cate= intent.getExtras().getString("category");
+        Call<List<ProductDto>> productresponse=iPostProductApi.getProduct(cate);
+        productresponse.enqueue(new Callback<List<ProductDto>>() {
+            @Override
+            public void onResponse(Call<List<ProductDto>> call, Response<List<ProductDto>> responseprod) {
+                List<ApiProduct> userDataList=new ArrayList<>();
+
+                for(int i=0;i<responseprod.body().size();i++)
+                 {
+                    String name=responseprod.body().get(i).getTitle();
+                    String image=responseprod.body().get(i).getImage();
+                    Double price=responseprod.body().get(i).getPrice();
+                    userDataList.add(new ApiProduct(name,image,price));
+
+               }
+
+                RecyclerView recyclerView=findViewById(R.id.recycles);
+                RecommendAdapter recycleViewAdapter=new RecommendAdapter(userDataList,Products.this);
+                LinearLayoutManager VerticalLayout= new LinearLayoutManager(Products.this,LinearLayoutManager.VERTICAL,false);
+                recyclerView.setLayoutManager(VerticalLayout);
+                recyclerView.setAdapter(recycleViewAdapter);
+
+            }
+
+            @Override
+            public void onFailure(Call<List<ProductDto>> call, Throwable t) {
+                Log.d("onFailure message", t.getMessage());
+              Toast.makeText(Products.this,"Error occured",Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     private  void displayLocalRecyclerView(){
@@ -51,6 +99,7 @@ public class Products extends AppCompatActivity implements RecommendAdapter.IApi
     public void onUserClick(ApiProduct userDatamodel) {
         Intent intent=new Intent(this,ProductDetail.class);
         intent.putExtra("imageUrl",userDatamodel.getImage());
+        intent.putExtra("productName",userDatamodel.getName());
         startActivity(intent);
     }
 }

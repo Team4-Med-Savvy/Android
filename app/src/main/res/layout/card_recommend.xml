@@ -18,7 +18,6 @@
         app:cardCornerRadius="10dp"
 
         app:cardElevation="5dp"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,6 +32,7 @@
                 android:layout_width="159dp"
                 android:layout_height="127dp"
                 android:layout_marginTop="20dp"
+                android:src="@drawable/ic_person"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
