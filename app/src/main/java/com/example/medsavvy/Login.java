@@ -14,6 +14,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.medsavvy.retrofit.model.AuthDto;
+import com.example.medsavvy.retrofit.model.ResponseDto;
+import com.example.medsavvy.retrofit.model.UserDto;
+import com.example.medsavvy.retrofit.network.IPostUserApi;
+import com.example.medsavvy.retrofit.networkmanager.UserRetrofitBuilder;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -22,14 +27,19 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
 public class Login extends AppCompatActivity {
     GoogleSignInClient mGoogleSignInClient;
     private static int RC_SIGN_IN = 100;
+    private static int flag=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        Button yourButton = (Button) findViewById(R.id.bn_login);
 
         findViewById(R.id.bn_login_signup).setOnClickListener(v -> {
             Intent intent=new Intent(Login.this,SignUp.class);
@@ -37,22 +47,16 @@ public class Login extends AppCompatActivity {
             finish();
 
         });
-
-        EditText li = findViewById(R.id.login_email);
-        EditText pw = findViewById(R.id.login_password);
-
-        SharedPreferences sharedpreferences = getSharedPreferences("com.example.medsavvy", Context.MODE_PRIVATE);
         findViewById(R.id.bn_login).setOnClickListener(view -> {
-            String s1=pw.getText().toString();
-            String s2=sharedpreferences.getString(pw.getText().toString(),"default");
-            if(s1.equals(s2)) {
-                Intent i = new Intent(Login.this, HomePage.class);
-                startActivity(i);
-            }
-            else
-            {
-                Toast.makeText(this,"Incorrect Credentials",Toast.LENGTH_SHORT).show();
-            }
+
+                    initApi(generateRequest());
+                  //  Intent i;
+//                    if (flag == 1) {
+
+//                    } else {
+                        //Toast.makeText(this, "Incorrect Credentials", Toast.LENGTH_SHORT).show();
+//                    }
+
 
         });
 
@@ -109,6 +113,7 @@ public class Login extends AppCompatActivity {
                 Uri personPhoto = acct.getPhotoUrl();
                 Toast.makeText(this , "User Email : " + personEmail , Toast.LENGTH_SHORT).show();
             }
+            initApi(generateRequest());
             startActivity(new Intent(this , HomePage.class));
             // Signed in successfully, show authenticated UI.
         } catch (ApiException e) {
@@ -118,4 +123,43 @@ public class Login extends AppCompatActivity {
 
         }
     }
+    public  AuthDto generateRequest()
+    {
+
+        EditText etemail= findViewById(R.id.login_email);
+        EditText etpass = findViewById(R.id.login_password);
+
+        AuthDto authDto=new AuthDto();
+        authDto.setUsername(etemail.getText().toString());
+        authDto.setPassword(etpass.getText().toString());
+
+        return authDto;
+
+    }
+    private void initApi(AuthDto authDto)
+    {
+        Retrofit retrofit= UserRetrofitBuilder.getInstance();
+        IPostUserApi iPostUserApi=retrofit.create(IPostUserApi.class);
+        Call<ResponseDto> response=iPostUserApi.generateToken(authDto);
+
+        response.enqueue(new Callback<ResponseDto>() {
+            @Override
+            public void onResponse(Call<ResponseDto> call, Response<ResponseDto> response) {
+                Toast.makeText(Login.this,"Success",Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(Login.this, HomePage.class);
+                startActivity(i);
+                System.out.println(response);
+                flag=1;
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseDto> call, Throwable t) {
+                Toast.makeText(Login.this,"Failure",Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+
 }
