@@ -103,6 +103,7 @@ public class HomePage extends AppCompatActivity implements RecommendAdapter.IApi
     public void onUserClick(ApiProduct userDatamodel) {
     Intent intent=new Intent(HomePage.this,ProductDetail.class);
     intent.putExtra("imageUrl",userDatamodel.getImage());
-    startActivity(intent);
+    intent.putExtra("productName",userDatamodel.getName());
+        startActivity(intent);
     }
 }

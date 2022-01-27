@@ -58,7 +58,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
@@ -84,15 +84,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_product_name" />
 
+    <TextView
+        android:id="@+id/tv_prod_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="36dp"
+        android:text="Price"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_prod_descrip" />
+
     <Button
         android:id="@+id/bn_add_to_cart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="132dp"
+        android:layout_marginTop="160dp"
         android:backgroundTint="@color/teal_700"
         android:text="Add To Cart"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.223"
+        app:layout_constraintHorizontal_bias="0.197"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_prod_descrip" />
 
@@ -100,11 +111,11 @@
         android:id="@+id/bn_buy_now"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="132dp"
+        android:layout_marginTop="160dp"
         android:backgroundTint="@color/teal_700"
         android:text="Buy Now"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.438"
+        app:layout_constraintHorizontal_bias="0.371"
         app:layout_constraintStart_toEndOf="@+id/bn_add_to_cart"
         app:layout_constraintTop_toBottomOf="@+id/tv_prod_descrip" />
 
@@ -116,19 +127,19 @@
         android:text="Quantity"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.049"
+        app:layout_constraintHorizontal_bias="0.149"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_prod_descrip" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_prod_price" />
 
     <Button
         android:id="@+id/bn_decrement"
         android:layout_width="60dp"
         android:layout_height="41dp"
-        android:layout_marginTop="24dp"
-        android:text="-"
+        android:layout_marginTop="96dp"
         android:backgroundTint="@color/teal_700"
+        android:text="-"
         app:layout_constraintEnd_toStartOf="@+id/bn_increment"
-        app:layout_constraintHorizontal_bias="0.648"
+        app:layout_constraintHorizontal_bias="0.633"
         app:layout_constraintStart_toEndOf="@+id/tv_quant"
         app:layout_constraintTop_toBottomOf="@+id/tv_prod_descrip" />
 
@@ -136,12 +147,12 @@
         android:id="@+id/tv_quant"
         android:layout_width="60dp"
         android:layout_height="41dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="96dp"
         android:layout_marginEnd="12dp"
-        android:text="0"
         android:gravity="center"
+        android:text="0"
         app:layout_constraintEnd_toStartOf="@+id/bn_increment"
-        app:layout_constraintHorizontal_bias="0.263"
+        app:layout_constraintHorizontal_bias="0.278"
         app:layout_constraintStart_toEndOf="@+id/tv_quantity"
         app:layout_constraintTop_toBottomOf="@+id/tv_prod_descrip" />
 
@@ -149,10 +160,10 @@
         android:id="@+id/bn_increment"
         android:layout_width="60dp"
         android:layout_height="41dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:text="+"
+        android:layout_marginTop="96dp"
+        android:layout_marginEnd="24dp"
         android:backgroundTint="@color/teal_700"
+        android:text="+"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_prod_descrip" />
 

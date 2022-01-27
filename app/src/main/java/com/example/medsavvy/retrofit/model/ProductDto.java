@@ -18,7 +18,7 @@ public class ProductDto implements Serializable {
     @SerializedName("category")
     private String category;
     @SerializedName("merchant")
-    private List<String> merchant;
+    private List<MerchantDto> merchant;
     @SerializedName("image")
     private String image;
 
@@ -54,11 +54,11 @@ public class ProductDto implements Serializable {
         this.category = category;
     }
 
-    public List<String> getMerchant() {
+    public List<MerchantDto> getMerchant() {
         return merchant;
     }
 
-    public void setMerchant(List<String> merchant) {
+    public void setMerchant(List<MerchantDto> merchant) {
         this.merchant = merchant;
     }
 

@@ -20,8 +20,12 @@ public class ProductDetail extends AppCompatActivity {
         setContentView(R.layout.activity_product_detail);
 
         ImageView imageurl=findViewById(R.id.iv_prod_detail);
+        TextView productname=findViewById(R.id.tv_product_name);
+
         Intent intent = getIntent();
         String url = intent.getExtras().getString("imageUrl");
+        String name = intent.getExtras().getString("productName");
+        productname.setText(name);
         Glide.with(imageurl.getContext()).load(url).placeholder(R.drawable.ic_login).into(imageurl);
 
         findViewById(R.id.iv_home_login).setOnClickListener(v -> {
@@ -48,9 +52,6 @@ public class ProductDetail extends AppCompatActivity {
             if(count<0)count=0;
             display.setText(""+count);
         });
-
-
-
 
     }
 }

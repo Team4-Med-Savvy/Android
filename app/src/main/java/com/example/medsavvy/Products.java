@@ -99,6 +99,7 @@ public class Products extends AppCompatActivity implements RecommendAdapter.IApi
     public void onUserClick(ApiProduct userDatamodel) {
         Intent intent=new Intent(this,ProductDetail.class);
         intent.putExtra("imageUrl",userDatamodel.getImage());
+        intent.putExtra("productName",userDatamodel.getName());
         startActivity(intent);
     }
 }
