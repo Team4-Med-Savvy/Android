@@ -2,7 +2,9 @@ package com.example.medsavvy;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.EditText;
 
@@ -12,16 +14,29 @@ public class SignUp extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-
+        EditText fn = findViewById(R.id.et_signup_name);
+        EditText em = findViewById(R.id.et_signup_email);
+        EditText pwd = findViewById(R.id.et_signup_password);
+        EditText cpwd = findViewById(R.id.et_signup_confirm);
 
         findViewById(R.id.bn_signup_submit).setOnClickListener(v -> {
             boolean isAllFieldChecked=CheckAllFields();
 
             if(isAllFieldChecked){
-//                Intent intent=new Intent(SignUp.this,Login.class);
-//                startActivity(intent);
+                SharedPreferences sharedPreferences = getSharedPreferences("com.example.medsavvy", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("pass", pwd.getText().toString());
+                editor.putString("confirm", cpwd.getText().toString());
+                editor.putString("name", fn.getText().toString());
+                editor.putString("em", em.getText().toString());
+                editor.apply();
+                Intent k = new Intent(SignUp.this, Login.class);
+                startActivity(k);
             }
         });
+
+
+
     }
 
     private boolean CheckAllFields() {

@@ -26,19 +26,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="10"
+                android:layout_weight="11"
                 android:text="Profile"
                 android:textColor="@color/white"
                 android:textSize="26sp" />
 
 
-            <ImageView
-                android:id="@+id/iv_profile_login"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:src="@drawable/ic_login" />
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
 
@@ -174,13 +167,27 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycleList"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="396dp"
+        android:layout_height="194dp"
         android:layout_marginTop="28dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView11"></androidx.recyclerview.widget.RecyclerView>
+        app:layout_constraintTop_toBottomOf="@+id/textView11"
+        app:layout_constraintVertical_bias="0.121"></androidx.recyclerview.widget.RecyclerView>
+
+    <Button
+        android:id="@+id/bn_log_out"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/teal_700"
+        android:text="Log Out"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recycleList" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"

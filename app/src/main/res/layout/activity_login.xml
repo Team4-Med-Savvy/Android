@@ -100,11 +100,10 @@
         app:layout_constraintTop_toBottomOf="@+id/login_password" />
 
 
-
     <Button
-        android:id="@+id/iv_google_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/sign_in_button"
+        android:layout_width="250dp"
+        android:layout_height="53dp"
         android:layout_marginTop="36dp"
         android:backgroundTint="@color/white"
         android:drawableLeft="@drawable/gg"
