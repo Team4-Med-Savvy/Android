@@ -38,7 +38,6 @@ public class Profile extends AppCompatActivity implements OrderAdapter.IApiRespo
         displayLocalRecyclerView();
         Name=findViewById(R.id.tv_profile_name);
         Email=findViewById(R.id.tv_profile_email);
-
         findViewById(R.id.bn_log_out).setOnClickListener(v -> {
             Intent i=new Intent(Profile.this,Login.class);
             startActivity(i);
