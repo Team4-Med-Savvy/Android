@@ -1,29 +1,37 @@
 package com.example.medsavvy;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.medsavvy.RecycleView.adapter.RecommendAdapter;
 import com.example.medsavvy.RecycleView.model.ApiProduct;
+import com.example.medsavvy.retrofit.model.MerchantDto;
+import com.example.medsavvy.retrofit.model.MerchantProductDetailDto;
+import com.example.medsavvy.retrofit.model.ProductDetailDto;
+import com.example.medsavvy.retrofit.model.ProductDto;
 import com.example.medsavvy.retrofit.model.RequestCartDto;
-import com.example.medsavvy.retrofit.model.ResponseCartDto;
+import com.example.medsavvy.retrofit.model.ResponseProductDto;
 import com.example.medsavvy.retrofit.network.IPostCartApi;
+import com.example.medsavvy.retrofit.network.IPostProductApi;
 import com.example.medsavvy.retrofit.networkmanager.CartRetrofilBuilder;
+import com.example.medsavvy.retrofit.networkmanager.ProductRetrofitBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +53,9 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
         ImageView imageurl=findViewById(R.id.iv_prod_detail);
         TextView productname=findViewById(R.id.tv_product_name);
 
+
+
+
         Intent intent = getIntent();
         String url = intent.getExtras().getString("imageUrl");
         String name = intent.getExtras().getString("productName");
@@ -54,6 +65,7 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
         productname.setText(name);
         Glide.with(imageurl.getContext()).load(url).placeholder(R.drawable.ic_login).into(imageurl);
         displayLocalRecyclerView();
+
         findViewById(R.id.iv_home_login).setOnClickListener(v -> {
             Intent i=new Intent(ProductDetail.this,Login.class);
             startActivity(i);
@@ -106,18 +118,34 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
 
    }
     private  void displayLocalRecyclerView(){
-//        List<ApiProduct> userDataList=new ArrayList<>();
-//        generateUserData(userDataList);
-//        RecyclerView recyclerView=findViewById(R.id.recycle_merch);
-//        RecommendAdapter recycleViewAdapter=new RecommendAdapter(userDataList,ProductDetail.this);
-//        LinearLayoutManager HorizontalLayout= new LinearLayoutManager(ProductDetail.this,LinearLayoutManager.HORIZONTAL,false);
+
+        Retrofit retrofit= ProductRetrofitBuilder.getInstance();
+        IPostProductApi iPostProductApi=retrofit.create(IPostProductApi.class);
+        String pid=getIntent().getExtras().getString("productId");
+        Call<ResponseProductDto> productresponse=iPostProductApi.findmerchantlist(pid);
+
+        System.out.println(productresponse);
+
+            productresponse.enqueue(new Callback<ResponseProductDto>() {
+                @Override
+                public void onResponse(Call<ResponseProductDto> call, Response<ResponseProductDto> response) {
+                    ListView listView= (ListView)findViewById(R.id.id_list);
+                    System.out.println(response.body().getMerchantProductDetailDtos().get(0).getPrice());
+                    System.out.println(response.body().getMerchantProductDetailDtos().get(1).getMerchantId());
+
+                    CustomAdapter customAdapter=new CustomAdapter(ProductDetail.this,response.body().getMerchantProductDetailDtos());
+                    listView.setAdapter(customAdapter);
+                }
+
+                @Override
+                public void onFailure(Call<ResponseProductDto> call, Throwable t) {
+                    Toast.makeText(ProductDetail.this,"Failure",Toast.LENGTH_SHORT).show();
+                }
+            });
 //
-//
-//        recyclerView.setLayoutManager(HorizontalLayout);
-//        recyclerView.setAdapter(recycleViewAdapter);
-        ListView listView= (ListView)findViewById(R.id.id_list);
-        CustomAdapter customAdapter=new CustomAdapter();
-        listView.setAdapter(customAdapter);
+//        ListView listView= (ListView)findViewById(R.id.id_list);
+//        CustomAdapter customAdapter=new CustomAdapter(ProductDetail.this,merchantid);
+//        listView.setAdapter(customAdapter);
 
 
     }
@@ -143,32 +171,62 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
         startActivity(intent);
     }
 
-    class CustomAdapter extends BaseAdapter
+    class CustomAdapter extends ArrayAdapter<MerchantProductDetailDto>
     {
 
-        @Override
-        public int getCount() {
-            return merchantName.length;
+        private List<MerchantProductDetailDto> items;
+        private Context context;
+        private LayoutInflater vi;
+
+        public CustomAdapter(@NonNull Context context, @NonNull List<MerchantProductDetailDto> items) {
+            super(context, 0, items);
+            this.context=context;
+            this.items=items;
+//            vi=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
+//        @Override
+//        public int getCount() {
+//            return items.size();
+//        }
+//
+//        @Override
+//        public MerchantProductDetailDto getItem(int position) {
+//            return items.get(position);
+//        }
+//
+//        @Override
+//        public long getItemId(int position) {
+//            return 0;
+//        }
 
         @Override
-        public long getItemId(int position) {
-            return 0;
-        }
+        public View getView(int i, View convertview, ViewGroup viewGroup) {
+           // View v=convertview
+//            if(items.get(i)!=null)
+//            {
+                try {
+//                    vi=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//                    v = vi.inflate(R.layout.custom_listview, null);
+                    convertview=getLayoutInflater().inflate(R.layout.custom_listview,null);
+                    TextView textView_name = (TextView) findViewById(R.id.li_name);
+                    TextView textView_price = (TextView) findViewById(R.id.li_price);
 
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            view=getLayoutInflater().inflate(R.layout.custom_listview,null);
-            TextView textView_name=(TextView)view.findViewById(R.id.li_name);
-            TextView textView_price=(TextView)view.findViewById(R.id.li_price);
-            textView_name.setText(merchantName[i]);
-            textView_price.setText(merchantDescription[i]);
-            return view;
+                    textView_name.setText(items.get(i).getMerchantId());
+                    textView_price.setText((int) Math.round(items.get(i).getPrice())+"");
+                }catch (Exception e){
+                    System.out.println(e.getMessage());
+                }
+
+
+//            }
+//            view=getLayoutInflater().inflate(R.layout.custom_listview,null);
+//            TextView textView_name=(TextView)view.findViewById(R.id.li_name);
+//            TextView textView_price=(TextView)view.findViewById(R.id.li_price);
+//
+//            textView_name.setText(items.get(i).getMerchantId());
+//            textView_price.setText((int)items.get(i).getPrice());
+            return convertview;
         }
 
     }

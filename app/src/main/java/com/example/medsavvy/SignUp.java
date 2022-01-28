@@ -116,7 +116,7 @@ public class SignUp extends AppCompatActivity {
                 cart.enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
-                        Toast.makeText(SignUp.this," cart Success",Toast.LENGTH_LONG).show();
+                        Toast.makeText(SignUp.this," Cart Success",Toast.LENGTH_LONG).show();
 
                     }
 

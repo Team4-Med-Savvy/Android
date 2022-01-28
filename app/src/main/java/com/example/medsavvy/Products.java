@@ -102,6 +102,8 @@ public class Products extends AppCompatActivity implements RecommendAdapter.IApi
         intent.putExtra("imageUrl",userDatamodel.getImage());
         intent.putExtra("productName",userDatamodel.getName());
         intent.putExtra("productId",userDatamodel.getId());
+
+
         startActivity(intent);
     }
 }
