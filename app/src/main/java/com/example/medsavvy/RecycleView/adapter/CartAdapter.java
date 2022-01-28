@@ -27,7 +27,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolderCart
         this.mUserDataInterface = iApiResponseClick;
     }
 
-
     @NonNull
     @Override
     public ViewHolderCart onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -54,7 +53,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolderCart
             holder.display.setText(""+count);
         });
 
-        Glide.with(holder.ivProduct.getContext()).load(apiProduct.getImage()).placeholder(R.drawable.ic_login).into(holder.ivProduct);
+        Glide.with(holder.ivProduct.getContext()).load("https://rukminim1.flixcart.com/image/416/416/j8osu4w0/chyawanprash/u/g/z/1-chyawanprash-patanjali-original-imaeymvf8tzsbnpz.jpeg?q=70").into(holder.ivProduct);
         holder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

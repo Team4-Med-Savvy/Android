@@ -129,6 +129,8 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
             productresponse.enqueue(new Callback<ResponseProductDto>() {
                 @Override
                 public void onResponse(Call<ResponseProductDto> call, Response<ResponseProductDto> response) {
+                    TextView decsrip=findViewById(R.id.tv_prod_descrip);
+                    decsrip.setText(response.body().getDescription());
                     ListView listView= (ListView)findViewById(R.id.id_list);
                     System.out.println(response.body().getMerchantProductDetailDtos().get(0).getPrice());
                     System.out.println(response.body().getMerchantProductDetailDtos().get(1).getMerchantId());
