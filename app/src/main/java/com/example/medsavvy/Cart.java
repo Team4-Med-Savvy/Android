@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.medsavvy.RecycleView.adapter.CartAdapter;
@@ -72,7 +73,7 @@ int count=0;
                     apiProduct.setName(productlist.get(i).getTitle());
                     apiProduct.setImage(productlist.get(i).getImage());
                     apiProduct.setPrice(Double.parseDouble(productlist.get(i).getPrice().toString()));
-                    total_price+=Double.parseDouble(productlist.get(i).getPrice().toString());
+                    total_price=total_price+Double.parseDouble(productlist.get(i).getPrice().toString());
                     userDataList.add(apiProduct);
                 }
 
