@@ -3,23 +3,20 @@
     package="com.example.medsavvy">
 
     <uses-permission android:name="android.permission.INTERNET" />
-<!--    <uses-permission android:name="android.permission.WAKE_LOCK"/>-->
 
     <application
-        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MedSavvy">
-
-        <activity android:name=".Cart"></activity>
+        android:theme="@style/Theme.MedSavvy"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".OrderHistory"></activity>
+        <activity android:name=".Cart" />
         <activity android:name=".Products" />
-
-        <activity android:name=".Profile"></activity>
+        <activity android:name=".Profile" />
         <activity android:name=".ProductDetail" />
-
         <activity android:name=".HomePage" />
         <activity android:name=".SignUp" />
         <activity android:name=".SplashScreen">
