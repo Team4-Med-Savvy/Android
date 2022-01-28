@@ -11,10 +11,12 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.medsavvy.RecycleView.adapter.RecommendAdapter;
 import com.example.medsavvy.RecycleView.model.ApiProduct;
+import com.example.medsavvy.retrofit.model.RequestCartDto;
 import com.example.medsavvy.retrofit.model.ResponseCartDto;
 import com.example.medsavvy.retrofit.network.IPostCartApi;
 import com.example.medsavvy.retrofit.networkmanager.CartRetrofilBuilder;
@@ -23,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class ProductDetail extends AppCompatActivity implements RecommendAdapter.IApiResponseClick {
@@ -41,6 +45,7 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
         String name = intent.getExtras().getString("productName");
         String prodId=intent.getExtras().getString("productId");
         System.out.println("productId"+prodId);
+        System.out.println("url "+ url);
         productname.setText(name);
         Glide.with(imageurl.getContext()).load(url).placeholder(R.drawable.ic_login).into(imageurl);
 
@@ -54,6 +59,14 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
             startActivity(i);
         });
 
+        findViewById(R.id.bn_add_to_cart).setOnClickListener(v -> {
+            init();
+//
+//            Intent i=new Intent(ProductDetail.this,ProductDetail.class);
+//            i.putExtra("productId",prodId);
+//            i.putExtra("merchnatId","0");
+//           startActivity(i);
+        });
 
 
     }
@@ -62,8 +75,31 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
     {
         Retrofit retrofit= CartRetrofilBuilder.getInstance();
         IPostCartApi iPostCartApi=retrofit.create(IPostCartApi.class);
-        SharedPreferences sharedPreferences = getSharedPreferences("com.example.medsavvy", Context.MODE_PRIVATE);
-    }
+        RequestCartDto requestCartDto=new RequestCartDto();
+
+        SharedPreferences sharedPreferences = getSharedPreferences("com.example.medsavvy", Context.MODE_PRIVATE);        Intent intent=getIntent();
+        String prodId=intent.getExtras().getString("productId");
+
+        requestCartDto.setProductId(prodId);
+        requestCartDto.setMerchantId("1");
+        requestCartDto.setPrice(new Long(0));
+        Call<Void> responsecart=iPostCartApi.addProduct(sharedPreferences.getString("em","default"),requestCartDto);
+
+        responsecart.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                Toast.makeText(ProductDetail.this,"Added to cart",Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(ProductDetail.this,"Failure",Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+   }
     private  void displayLocalRecyclerView(){
         List<ApiProduct> userDataList=new ArrayList<>();
         generateUserData(userDataList);

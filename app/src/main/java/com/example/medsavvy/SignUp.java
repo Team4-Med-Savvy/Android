@@ -9,9 +9,14 @@ import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.medsavvy.retrofit.model.CartDto;
 import com.example.medsavvy.retrofit.model.UserDto;
+import com.example.medsavvy.retrofit.network.IPostCartApi;
 import com.example.medsavvy.retrofit.network.IPostUserApi;
+import com.example.medsavvy.retrofit.networkmanager.CartRetrofilBuilder;
 import com.example.medsavvy.retrofit.networkmanager.UserRetrofitBuilder;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -105,6 +110,22 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 Toast.makeText(SignUp.this,"Success",Toast.LENGTH_SHORT).show();
+                Retrofit retrofit1= CartRetrofilBuilder.getInstance();
+                IPostCartApi iPostCartApi=retrofit1.create(IPostCartApi.class);
+                Call<Void> cart=iPostCartApi.save(new CartDto(userDto.getEmail(),new ArrayList<>()));
+                cart.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        Toast.makeText(SignUp.this," cart Success",Toast.LENGTH_LONG).show();
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Toast.makeText(SignUp.this,"Failure",Toast.LENGTH_LONG).show();
+
+                    }
+                });
             }
 
             @Override

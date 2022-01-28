@@ -1,5 +1,6 @@
 package com.example.medsavvy.retrofit.network;
 
+import com.example.medsavvy.retrofit.model.CartDto;
 import com.example.medsavvy.retrofit.model.RequestCartDto;
 import com.example.medsavvy.retrofit.model.ResponseCartDto;
 
@@ -10,10 +11,13 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface IPostCartApi {
-    @GET(value="/email/{email}")
+    @GET(value="cart/email/{email}")
     Call<ResponseCartDto> getCartByEmail(@Path(value="email") String email);
 
-    @POST("/{email}/inc")
+    @POST("cart/{email}/inc")
     Call<Void> addProduct(@Path(value="email") String email, @Body RequestCartDto requestDto);
+
+    @POST("cart")
+    Call<Void> save(@Body CartDto cartDto);
 
 }

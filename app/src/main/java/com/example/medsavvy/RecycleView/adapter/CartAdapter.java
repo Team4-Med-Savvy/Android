@@ -40,7 +40,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolderCart
         System.out.println("Name "+apiProduct.getName());
         holder.tvName.setText(apiProduct.getName());
         holder.tvPrice.setText(apiProduct.getPrice()+"");
-
+        System.out.println(holder.tvName);
         holder.increment.setOnClickListener(v -> {
             count++;
             holder.display.setText(""+count);

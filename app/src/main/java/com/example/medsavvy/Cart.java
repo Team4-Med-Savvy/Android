@@ -50,6 +50,7 @@ int count=0;
         productresponse.enqueue(new Callback<ResponseCartDto>() {
             @Override
             public void onResponse(Call<ResponseCartDto> call, Response<ResponseCartDto> response) {
+//                System.out.println(response.body().getProductList().get(0).g);
                 List<ResponseCartProductDto> productlist=response.body().getProductList();
                 List<ApiProduct> userDataList=new ArrayList<>();
 
@@ -59,6 +60,7 @@ int count=0;
                     apiProduct.setName(productlist.get(i).getName());
                     apiProduct.setImage(productlist.get(i).getImage());
                     apiProduct.setPrice(Double.parseDouble(productlist.get(i).getPrice().toString()));
+                    userDataList.add(apiProduct);
                 }
 
                 RecyclerView recyclerView=findViewById(R.id.recycle);
