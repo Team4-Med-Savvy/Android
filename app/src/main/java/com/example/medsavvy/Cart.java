@@ -57,7 +57,7 @@ int count=0;
                 for(int i=0;i<productlist.size();i++)
                 {
                     ApiProduct apiProduct=new ApiProduct();
-                    apiProduct.setName(productlist.get(i).getName());
+                    apiProduct.setName(productlist.get(i).getTitle());
                     apiProduct.setImage(productlist.get(i).getImage());
                     apiProduct.setPrice(Double.parseDouble(productlist.get(i).getPrice().toString()));
                     userDataList.add(apiProduct);

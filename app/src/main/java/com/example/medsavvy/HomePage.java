@@ -114,6 +114,7 @@ public class HomePage extends AppCompatActivity implements RecommendAdapter.IApi
 
                 }
 
+
                 RecyclerView recyclerView=findViewById(R.id.recyclehome);
                 RecommendAdapter recycleViewAdapter=new RecommendAdapter(userDataList,HomePage.this);
                 LinearLayoutManager  HorizontalLayout= new LinearLayoutManager(HomePage.this,LinearLayoutManager.HORIZONTAL,false);

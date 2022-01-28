@@ -8,8 +8,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,12 +35,13 @@ import retrofit2.Retrofit;
 
 public class ProductDetail extends AppCompatActivity implements RecommendAdapter.IApiResponseClick {
     int count=0;
+    String merchantName[] = {"India", "China", "australia", "Portugle", "America", "NewZealand"};
+    String merchantDescription[] = {"India1", "China1", "australia", "Portugle", "America", "NewZealand"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
-        displayLocalRecyclerView();
         ImageView imageurl=findViewById(R.id.iv_prod_detail);
         TextView productname=findViewById(R.id.tv_product_name);
 
@@ -48,7 +53,7 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
         System.out.println("url "+ url);
         productname.setText(name);
         Glide.with(imageurl.getContext()).load(url).placeholder(R.drawable.ic_login).into(imageurl);
-
+        displayLocalRecyclerView();
         findViewById(R.id.iv_home_login).setOnClickListener(v -> {
             Intent i=new Intent(ProductDetail.this,Login.class);
             startActivity(i);
@@ -101,15 +106,18 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
 
    }
     private  void displayLocalRecyclerView(){
-        List<ApiProduct> userDataList=new ArrayList<>();
-        generateUserData(userDataList);
-        RecyclerView recyclerView=findViewById(R.id.recycle_merch);
-        RecommendAdapter recycleViewAdapter=new RecommendAdapter(userDataList,ProductDetail.this);
-        LinearLayoutManager HorizontalLayout= new LinearLayoutManager(ProductDetail.this,LinearLayoutManager.HORIZONTAL,false);
-
-
-        recyclerView.setLayoutManager(HorizontalLayout);
-        recyclerView.setAdapter(recycleViewAdapter);
+//        List<ApiProduct> userDataList=new ArrayList<>();
+//        generateUserData(userDataList);
+//        RecyclerView recyclerView=findViewById(R.id.recycle_merch);
+//        RecommendAdapter recycleViewAdapter=new RecommendAdapter(userDataList,ProductDetail.this);
+//        LinearLayoutManager HorizontalLayout= new LinearLayoutManager(ProductDetail.this,LinearLayoutManager.HORIZONTAL,false);
+//
+//
+//        recyclerView.setLayoutManager(HorizontalLayout);
+//        recyclerView.setAdapter(recycleViewAdapter);
+        ListView listView= (ListView)findViewById(R.id.id_list);
+        CustomAdapter customAdapter=new CustomAdapter();
+        listView.setAdapter(customAdapter);
 
 
     }
@@ -133,5 +141,35 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
         Intent intent=new Intent(ProductDetail.this,ProductDetail.class);
         intent.putExtra("imageUrl",userDatamodel.getImage());
         startActivity(intent);
+    }
+
+    class CustomAdapter extends BaseAdapter
+    {
+
+        @Override
+        public int getCount() {
+            return merchantName.length;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            view=getLayoutInflater().inflate(R.layout.custom_listview,null);
+            TextView textView_name=(TextView)view.findViewById(R.id.li_name);
+            TextView textView_price=(TextView)view.findViewById(R.id.li_price);
+            textView_name.setText(merchantName[i]);
+            textView_price.setText(merchantDescription[i]);
+            return view;
+        }
+
     }
 }
