@@ -1,5 +1,7 @@
 package com.example.medsavvy.RecycleView.adapter;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.medsavvy.R;
 import com.example.medsavvy.RecycleView.model.ApiProduct;
-
 import java.util.List;
+
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolderCart> {
     int count=0;
@@ -61,6 +63,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolderCart
         });
     }
 
+
+
     @Override
     public int getItemCount() {
         return apiResponseList.size();
@@ -90,4 +94,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolderCart
             display=view.findViewById(R.id.tv_quant);
         }
     }
+
+
+
 }
+
+
