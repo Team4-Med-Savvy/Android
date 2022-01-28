@@ -130,7 +130,7 @@ public class Profile extends AppCompatActivity implements OrderAdapter.IApiRespo
 
     @Override
     public void onUserClick(ApiOrder userDatamodel) {
-//        Intent intent=new Intent(Profile.this,ProductDetail.class);
-//        startActivity(intent);
+        Intent intent=new Intent(Profile.this,OrderHistory.class);
+        startActivity(intent);
     }
 }
