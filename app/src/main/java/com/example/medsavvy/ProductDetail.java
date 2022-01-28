@@ -66,13 +66,13 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
 
         findViewById(R.id.bn_add_to_cart).setOnClickListener(v -> {
             init();
-//
-//            Intent i=new Intent(ProductDetail.this,ProductDetail.class);
-//            i.putExtra("productId",prodId);
-//            i.putExtra("merchnatId","0");
-//           startActivity(i);
         });
 
+        findViewById(R.id.bn_buy_now).setOnClickListener(v -> {
+            init();
+            Intent i=new Intent(ProductDetail.this,Cart.class);
+            startActivity(i);
+        });
 
     }
 

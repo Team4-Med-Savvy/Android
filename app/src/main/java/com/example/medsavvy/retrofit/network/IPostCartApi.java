@@ -17,6 +17,9 @@ public interface IPostCartApi {
     @POST("cart/{email}/inc")
     Call<Void> addProduct(@Path(value="email") String email, @Body RequestCartDto requestDto);
 
+    @POST("/{email}/{id}/dec")
+    Call<Void> deleteProduct(@Path(value="email") String email,@Path(value = "id") String id);
+
     @POST("cart")
     Call<Void> save(@Body CartDto cartDto);
 
