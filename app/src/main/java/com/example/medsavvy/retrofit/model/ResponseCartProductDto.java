@@ -13,6 +13,24 @@ public class ResponseCartProductDto {
     private long points;
     private long total_sales;
     private String merchantId;
+    private String productId;
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
 
     public String getTitle() {
         return title;

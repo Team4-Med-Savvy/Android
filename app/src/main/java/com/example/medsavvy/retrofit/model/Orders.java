@@ -1,19 +1,13 @@
 package com.example.medsavvy.retrofit.model;
 
+import java.util.List;
+
 public class Orders {
 
-    private Long id;
     private String userId;
     private String timeStamp;
-    private long total;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private Long total;
+    List<OrderedProducts> products;
 
     public String getUserId() {
         return userId;
@@ -31,11 +25,19 @@ public class Orders {
         this.timeStamp = timeStamp;
     }
 
-    public long getTotal() {
+    public Long getTotal() {
         return total;
     }
 
-    public void setTotal(long total) {
+    public void setTotal(Long total) {
         this.total = total;
+    }
+
+    public List<OrderedProducts> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<OrderedProducts> products) {
+        this.products = products;
     }
 }

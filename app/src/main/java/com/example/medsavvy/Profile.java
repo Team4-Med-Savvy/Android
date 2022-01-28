@@ -32,7 +32,7 @@ import java.util.List;
 public class Profile extends AppCompatActivity implements OrderAdapter.IApiResponseClick{
     GoogleSignInClient mGoogleSignInClient;
     private static int RC_SIGN_IN = 100;
-    TextView Name,Email,Points;
+    TextView Name,Email,Points,Membership;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,11 +41,13 @@ public class Profile extends AppCompatActivity implements OrderAdapter.IApiRespo
         Name=findViewById(R.id.tv_profile_name);
         Email=findViewById(R.id.tv_profile_email);
         Points=findViewById(R.id.tv_profile_points);
+        Membership=findViewById(R.id.tv_profile_member);
 
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.medsavvy", Context.MODE_PRIVATE);
         Name.setText(sharedPreferences.getString("name","customer"));
         Email.setText(sharedPreferences.getString("em","email"));
         Points.setText(sharedPreferences.getString("points","0"));
+        Membership.setText(sharedPreferences.getString("userId","default"));
 
         findViewById(R.id.bn_log_out).setOnClickListener(v -> {
             Intent i=new Intent(Profile.this,Login.class);
@@ -76,7 +78,9 @@ public class Profile extends AppCompatActivity implements OrderAdapter.IApiRespo
 
         button.setOnClickListener(v -> {
             signOut();
-
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.clear();
+            editor.apply();
         });
 
 
@@ -88,6 +92,7 @@ public class Profile extends AppCompatActivity implements OrderAdapter.IApiRespo
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Toast.makeText(Profile.this , "Signout",Toast.LENGTH_SHORT).show();
+
                         finish();
                     }
                 });
