@@ -14,15 +14,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.medsavvy.R;
+import com.example.medsavvy.RecycleView.model.ApiCart;
 import com.example.medsavvy.RecycleView.model.ApiProduct;
 import java.util.List;
 
+import retrofit2.Retrofit;
+
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolderCart> {
-    int count=0;
-    private final List<ApiProduct> apiResponseList;
+    int count;
+    private final List<ApiCart> apiResponseList;
     private final IApiResponseClick mUserDataInterface;
-    public CartAdapter(List<ApiProduct> apiResponseList, IApiResponseClick iApiResponseClick) {
+//    private final Retrofit retrofit;
+    public CartAdapter(List<ApiCart> apiResponseList, IApiResponseClick iApiResponseClick) {
         this.apiResponseList = apiResponseList;
         this.mUserDataInterface = iApiResponseClick;
     }
@@ -37,10 +41,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolderCart
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolderCart holder, int position) {
-        ApiProduct apiProduct = apiResponseList.get(position);
+        ApiCart apiProduct = apiResponseList.get(position);
         System.out.println("Name "+apiProduct.getName());
         holder.tvName.setText(apiProduct.getName());
         holder.tvPrice.setText(apiProduct.getPrice()+"");
+        holder.display.setText(apiProduct.getQuantity().toString());
+        count=Math.round(apiProduct.getQuantity());
         System.out.println(holder.tvName);
         holder.increment.setOnClickListener(v -> {
             count++;
@@ -70,7 +76,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolderCart
     }
 
     public interface IApiResponseClick {
-        void onUserClick(ApiProduct apiproduct);
+        void onUserClick(ApiCart apiproduct);
     }
 
     public static class ViewHolderCart extends RecyclerView.ViewHolder {

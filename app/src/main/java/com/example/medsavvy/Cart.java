@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.medsavvy.RecycleView.adapter.CartAdapter;
+import com.example.medsavvy.RecycleView.model.ApiCart;
 import com.example.medsavvy.RecycleView.model.ApiProduct;
 import com.example.medsavvy.retrofit.model.OrderedProducts;
 import com.example.medsavvy.retrofit.model.Orders;
@@ -44,7 +45,6 @@ int count=0;
 
         //displayLocalRecyclerView();
         init();
-
         findViewById(R.id.cart_proceed).setOnClickListener(v -> {
             initorder();
         });
@@ -65,14 +65,15 @@ int count=0;
             public void onResponse(Call<ResponseCartDto> call, Response<ResponseCartDto> response) {
                 List<ResponseCartProductDto> productlist=new ArrayList<>();
                 productlist=response.body().getProductList();
-                List<ApiProduct> userDataList=new ArrayList<>();
+                List<ApiCart> userDataList=new ArrayList<>();
 
                 for(int i=0;i<productlist.size();i++)
                 {
-                    ApiProduct apiProduct=new ApiProduct();
+                    ApiCart apiProduct=new ApiCart();
                     apiProduct.setName(productlist.get(i).getTitle());
                     apiProduct.setImage(productlist.get(i).getImage());
                     apiProduct.setPrice(Double.parseDouble(productlist.get(i).getPrice().toString()));
+                    apiProduct.setQuantity(Long.valueOf(productlist.get(i).getQuantity()));
                     total_price=total_price+Double.parseDouble(productlist.get(i).getPrice().toString());
                     userDataList.add(apiProduct);
                 }
@@ -179,13 +180,13 @@ int count=0;
 
     }
     private  void displayLocalRecyclerView(){
-        List<ApiProduct> userDataList=new ArrayList<>();
-        generateUserData(userDataList);
-        RecyclerView recyclerView=findViewById(R.id.recycle);
-        CartAdapter cartAdapter=new CartAdapter(userDataList,Cart.this);
-        LinearLayoutManager VerticalLayout= new LinearLayoutManager(Cart.this,LinearLayoutManager.VERTICAL,false);
-        recyclerView.setLayoutManager(VerticalLayout);
-        recyclerView.setAdapter(cartAdapter);
+//        List<ApiProduct> userDataList=new ArrayList<>();
+//        generateUserData(userDataList);
+//        RecyclerView recyclerView=findViewById(R.id.recycle);
+//        CartAdapter cartAdapter=new CartAdapter(userDataList,Cart.this);
+//        LinearLayoutManager VerticalLayout= new LinearLayoutManager(Cart.this,LinearLayoutManager.VERTICAL,false);
+//        recyclerView.setLayoutManager(VerticalLayout);
+//        recyclerView.setAdapter(cartAdapter);
     }
 
 
@@ -203,7 +204,7 @@ int count=0;
   }
 
     @Override
-    public void onUserClick(ApiProduct userDatamodel) {
+    public void onUserClick(ApiCart userDatamodel) {
         Toast.makeText(this, "You have purchased this" + userDatamodel, Toast.LENGTH_SHORT).show();
 
     }
