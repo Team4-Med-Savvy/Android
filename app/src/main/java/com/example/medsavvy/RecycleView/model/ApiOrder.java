@@ -3,21 +3,24 @@ package com.example.medsavvy.RecycleView.model;
 import java.util.Date;
 
 public class ApiOrder {
-    private String orderid;
+    private Long orderid;
     private Double amount;
     private String date;
 
-    public ApiOrder(String orderid,Double amount,String date){
+    public ApiOrder(){
+
+    }
+    public ApiOrder(Long orderid,Double amount,String date){
         this.orderid=orderid;
         this.amount=amount;
         this.date=date;
     }
 
-    public String getOrderid() {
+    public Long getOrderid() {
         return orderid;
     }
 
-    public void setOrderid(String orderid) {
+    public void setOrderid(Long orderid) {
         this.orderid = orderid;
     }
 

@@ -18,6 +18,9 @@ import com.example.medsavvy.RecycleView.adapter.OrderAdapter;
 import com.example.medsavvy.RecycleView.adapter.RecommendAdapter;
 import com.example.medsavvy.RecycleView.model.ApiOrder;
 import com.example.medsavvy.RecycleView.model.ApiProduct;
+import com.example.medsavvy.retrofit.model.OrdersDto;
+import com.example.medsavvy.retrofit.network.IPostOrderApi;
+import com.example.medsavvy.retrofit.networkmanager.OrderRetrofitBuilder;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -29,6 +32,11 @@ import com.google.android.gms.tasks.Task;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
 public class Profile extends AppCompatActivity implements OrderAdapter.IApiResponseClick{
     GoogleSignInClient mGoogleSignInClient;
     private static int RC_SIGN_IN = 100;
@@ -37,7 +45,8 @@ public class Profile extends AppCompatActivity implements OrderAdapter.IApiRespo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        displayLocalRecyclerView();
+       // displayLocalRecyclerView();
+        initorder();
         Name=findViewById(R.id.tv_profile_name);
         Email=findViewById(R.id.tv_profile_email);
         Points=findViewById(R.id.tv_profile_points);
@@ -109,7 +118,47 @@ public class Profile extends AppCompatActivity implements OrderAdapter.IApiRespo
     }
 
 
-    private  void displayLocalRecyclerView(){
+    private void initorder() {
+        Retrofit retrofit = OrderRetrofitBuilder.getInstance();
+        IPostOrderApi iPostOrderApi = retrofit.create(IPostOrderApi.class);
+        SharedPreferences sharedPreferences = getSharedPreferences("com.example.medsavvy", Context.MODE_PRIVATE);
+
+        Call<List<OrdersDto>>  orders=iPostOrderApi.findUserOrders(sharedPreferences.getString("userId","0"));
+       orders.enqueue(new Callback<List<OrdersDto>>() {
+           @Override
+           public void onResponse(Call<List<OrdersDto>> call, Response<List<OrdersDto>> response) {
+               List<ApiOrder> apiOrders=new ArrayList<>();
+               List<OrdersDto> ordersDtos=response.body();
+               for(int i=0;i<ordersDtos.size();i++)
+               {
+                   ApiOrder apiOrder=new ApiOrder();
+                   apiOrder.setOrderid(ordersDtos.get(i).getId());
+                   apiOrder.setDate(ordersDtos.get(i).getTimeStamp());
+                   apiOrder.setAmount(Double.parseDouble(ordersDtos.get(i).getTotal()+""));
+
+                   apiOrders.add(apiOrder);
+               }
+               RecyclerView recyclerView=findViewById(R.id.recycleList);
+               OrderAdapter recycleViewAdapter=new OrderAdapter(apiOrders,Profile.this);
+               LinearLayoutManager HorizontalLayout= new LinearLayoutManager(Profile.this,LinearLayoutManager.HORIZONTAL,false);
+
+               recyclerView.setLayoutManager(HorizontalLayout);
+               recyclerView.setAdapter(recycleViewAdapter);
+
+
+
+           }
+
+           @Override
+           public void onFailure(Call<List<OrdersDto>> call, Throwable t) {
+
+           }
+       });
+
+    }
+
+
+        private  void displayLocalRecyclerView(){
         List<ApiOrder> userDataList=new ArrayList<>();
         generateUserData(userDataList);
         RecyclerView recyclerView=findViewById(R.id.recycleList);
@@ -125,17 +174,18 @@ public class Profile extends AppCompatActivity implements OrderAdapter.IApiRespo
 
 
     private void generateUserData(List<ApiOrder> userDataList) {
-        userDataList.add(new ApiOrder("Order 1", 10.0 ,"12/12/1999"));
-        userDataList.add(new ApiOrder("Order 2", 10.0 ,"12/12/1999"));
-        userDataList.add(new ApiOrder("Order 3", 10.0 ,"12/12/1999"));
-        userDataList.add(new ApiOrder("Order 4", 10.0 ,"12/12/1999"));
-        userDataList.add(new ApiOrder("Order 5", 10.0 ,"12/12/1999"));
+//        userDataList.add(new ApiOrder("Order 1", 10.0 ,"12/12/1999"));
+//        userDataList.add(new ApiOrder("Order 2", 10.0 ,"12/12/1999"));
+//        userDataList.add(new ApiOrder("Order 3", 10.0 ,"12/12/1999"));
+//        userDataList.add(new ApiOrder("Order 4", 10.0 ,"12/12/1999"));
+//        userDataList.add(new ApiOrder("Order 5", 10.0 ,"12/12/1999"));
 
     }
 
     @Override
     public void onUserClick(ApiOrder userDatamodel) {
         Intent intent=new Intent(Profile.this,OrderHistory.class);
+        intent.putExtra("orderid",userDatamodel.getOrderid());
         startActivity(intent);
     }
 }

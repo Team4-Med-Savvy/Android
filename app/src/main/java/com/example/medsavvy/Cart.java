@@ -40,9 +40,7 @@ int count=0;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
-//        List<ResponseCartProductDto> productlist=new ArrayList<>();
 
-        //displayLocalRecyclerView();
         init();
         findViewById(R.id.cart_proceed).setOnClickListener(v -> {
             initorder();
@@ -73,10 +71,13 @@ int count=0;
                     apiProduct.setImage(productlist.get(i).getImage());
                     apiProduct.setPrice(Double.parseDouble(productlist.get(i).getPrice().toString()));
                     apiProduct.setQuantity(Long.valueOf(productlist.get(i).getQuantity()));
-                    total_price=total_price+Double.parseDouble(productlist.get(i).getPrice().toString());
+                    Long Quantity=Long.valueOf(productlist.get(i).getQuantity());
+                    total_price=total_price+Quantity*Double.parseDouble(productlist.get(i).getPrice().toString());
                     userDataList.add(apiProduct);
                 }
 
+                TextView price=findViewById(R.id.totalprice_cart);
+                price.setText(total_price+"");
                 RecyclerView recyclerView=findViewById(R.id.recycle);
                 CartAdapter cartAdapter=new CartAdapter(userDataList,Cart.this);
                 LinearLayoutManager VerticalLayout= new LinearLayoutManager(Cart.this,LinearLayoutManager.VERTICAL,false);
@@ -92,29 +93,7 @@ int count=0;
 
         });
     }
-//    public Orders setorder(List<ResponseCartProductDto> productlist)
-//    {
-//     Orders orders=new Orders();
-//        SharedPreferences sharedPreferences = getSharedPreferences("com.example.medsavvy", Context.MODE_PRIVATE);
-//        orders.setUserId(sharedPreferences.getString("userId",""));
-//    orders.setTotal(Math.round(total_price));
-//     orders.setTimeStamp(Calendar.getInstance().getTime().toString());
-//     List<OrderedProducts> orderedProductlist=new ArrayList<>();
-//
-//     for(int i=0;i<productlist.size();i++){
-//         OrderedProducts orderedProducts=new OrderedProducts();
-//         orderedProducts.setMerchantId(productlist.get(i).getMerchantId());
-//         Long quant=Long.valueOf(productlist.get(i).getQuantity());
-//         orderedProducts.setQuantity(quant);
-//         orderedProducts.setAmount(productlist.get(i).getPrice()*quant);
-//         orderedProducts.setProductId(productlist.get(i).getProductId());
-//
-//         orderedProductlist.add(orderedProducts);
-//     }
-//        orders.setProducts(orderedProductlist);
-//
-//        return  orders;
-//    }
+
     private void initorder(){
         Retrofit retrofit= OrderRetrofitBuilder.getInstance();
         IPostOrderApi iPostOrderApi=retrofit.create(IPostOrderApi.class);
@@ -164,7 +143,7 @@ int count=0;
 
                     @Override
                     public void onFailure(Call<Void> call, Throwable t) {
-                        Toast.makeText(Cart.this,"Fail",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Cart.this,"Order Placed!",Toast.LENGTH_SHORT).show();
                     }
                 });
 
