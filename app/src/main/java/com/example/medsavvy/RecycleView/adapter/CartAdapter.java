@@ -76,47 +76,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolderCart
                 IPostCartApi iPostCartApi=retrofit.create(IPostCartApi.class);
                 SharedPreferences sharedPreferences = cart.getSharedPreferences("com.example.medsavvy", Context.MODE_PRIVATE);
 
-                Call<ResponseCartDto> productresponse=iPostCartApi.getCartByEmail(sharedPreferences.getString("em","default"));
-
-
-                productresponse.enqueue(new Callback<ResponseCartDto>() {
-                    @Override
-                    public void onResponse(Call<ResponseCartDto> call, Response<ResponseCartDto> response) {
-                        List<ResponseCartProductDto> productlist=new ArrayList<>();
-                        productlist=response.body().getProductList();
-                        List<ApiCart> userDataList=new ArrayList<>();
-
-                        for(int i=0;i<productlist.size();i++)
-                        {
-                            ApiCart apiProduct=new ApiCart();
-                            apiProduct.setName(productlist.get(i).getTitle());
-                            apiProduct.setImage(productlist.get(i).getImage());
-                            apiProduct.setPrice(Double.parseDouble(productlist.get(i).getPrice().toString()));
-                            apiProduct.setQuantity(Long.valueOf(count));
-                            userDataList.add(apiProduct);
-                        }
-
-//                        RecyclerView recyclerView=findViewById(R.id.recycle);
-//                        CartAdapter cartAdapter=new CartAdapter(userDataList,Cart.this,retrofit,Cart.this);
-//                        LinearLayoutManager VerticalLayout= new LinearLayoutManager(Cart.this,LinearLayoutManager.VERTICAL,false);
-//                        recyclerView.setLayoutManager(VerticalLayout);
-//                        recyclerView.setAdapter(cartAdapter);
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseCartDto> call, Throwable t) {
-
-                    }
-
-                });
-
-
-            holder.display.setText(""+count);
-
-            //            count++;
-//            holder.display.setText(""+count);
-
             apiProduct.setQuantity(apiProduct.getQuantity()+1);
             holder.display.setText(apiProduct.getQuantity()+"");
 

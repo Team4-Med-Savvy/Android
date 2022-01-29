@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -126,10 +127,47 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
                 public void onResponse(Call<ResponseProductDto> call, Response<ResponseProductDto> response) {
                     TextView decsrip=findViewById(R.id.tv_prod_descrip);
                     decsrip.setText(response.body().getDescription());
-                    ListView listView= (ListView)findViewById(R.id.id_list);
 
-                    CustomAdapter customAdapter=new CustomAdapter(ProductDetail.this,response.body().getMerchantProductDetailDtos());
-                    listView.setAdapter(customAdapter);
+                    List<MerchantProductDetailDto> merchantProductDetailDtos=response.body().getMerchantProductDetailDtos();
+                    Spinner spinnerMerchantList = findViewById(R.id.merchant_list);
+                    List<String> merchants=new ArrayList<>();
+
+                    for (int i=0; i<merchantProductDetailDtos.size(); i++){
+                        MerchantProductDetailDto merchantDto = merchantProductDetailDtos.get(i);
+                        String merchantSpinnerDetails = "Merchant ID: "+merchantDto.getMerchantId()+",     Price Offered: "+merchantDto.getPrice();
+                        merchants.add(merchantSpinnerDetails);
+                    }
+
+                    ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(ProductDetail.this, android.R.layout.simple_spinner_dropdown_item, merchants);
+                    spinnerMerchantList.setAdapter(stringArrayAdapter);
+
+//                    tvProductNameDetails.setText(response.body().getProductName());
+//                    tvProductDetailsDescription.setText(response.body().getDescription());
+//                    tvProductDetailsProductPrice.setText(response.body().getPrice()+"");
+//                    Glide.with(ivProductDetailsImage).load(response.body().getImage()).placeholder(R.drawable.logo_afa).into(ivProductDetailsImage);
+
+                    spinnerMerchantList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                        }
+                    });
+
+                    spinnerMerchantList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                            tvProductDetailsDescription.setText(merchants.get(i).);
+//                            tvProductDetailsProductPrice.setText(merchants.get(i).getPrice()+"");
+//                            intentMerchantId = merchantList.get(i).getMerchantId();
+//                            currentMerchantQuantity = me.get(i).getQuantity();
+//                            Log.d("soham",intentMerchantId+"");
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+
+                        }
+                    });
                 }
                 @Override
                 public void onFailure(Call<ResponseProductDto> call, Throwable t) {
@@ -156,14 +194,11 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
     class CustomAdapter extends ArrayAdapter<MerchantProductDetailDto>
     {
 
-        private List<MerchantProductDetailDto> items;
-        private Context context;
-        private LayoutInflater vi;
 
         public CustomAdapter(@NonNull Context context, @NonNull List<MerchantProductDetailDto> items) {
             super(context, 0, items);
-            this.context=context;
-            this.items=items;
+//            this.context=context;
+//            this.items=items;
 //            vi=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
@@ -184,32 +219,6 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
 
         @Override
         public View getView(int i, View convertview, ViewGroup viewGroup) {
-           // View v=convertview
-            if(items.get(i)!=null)
-            {
-                try {
-                    for(int j=0;j<items.size();j++) {
-//                    vi=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//                    v = vi.inflate(R.layout.custom_listview, null);
-                        convertview = getLayoutInflater().inflate(R.layout.custom_listview, null);
-                        TextView textView_name = (TextView) findViewById(R.id.li_name);
-                        TextView textView_price = (TextView) findViewById(R.id.li_price);
-
-                        textView_name.setText(items.get(j).getMerchantId());
-                        textView_price.setText((int) Math.round(items.get(j).getPrice()) + "");
-                    }
-                }catch (Exception e){
-                    System.out.println(e.getMessage());
-                }
-
-
-            }
-//            view=getLayoutInflater().inflate(R.layout.custom_listview,null);
-//            TextView textView_name=(TextView)view.findViewById(R.id.li_name);
-//            TextView textView_price=(TextView)view.findViewById(R.id.li_price);
-//
-//            textView_name.setText(items.get(i).getMerchantId());
-//            textView_price.setText((int)items.get(i).getPrice());
             return convertview;
         }
 
