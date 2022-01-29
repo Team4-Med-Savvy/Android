@@ -42,7 +42,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class ProductDetail extends AppCompatActivity implements RecommendAdapter.IApiResponseClick {
-    int count=0;
+    int count=1;
     String merchantName[] = {"India", "China", "australia", "Portugle", "America", "NewZealand"};
     String merchantDescription[] = {"India1", "China1", "australia", "Portugle", "America", "NewZealand"};
 
@@ -77,8 +77,7 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
         });
 
         findViewById(R.id.bn_add_to_cart).setOnClickListener(v -> {
-            init();
-        });
+            init();        });
 
         findViewById(R.id.bn_buy_now).setOnClickListener(v -> {
             init();
@@ -100,6 +99,7 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
         requestCartDto.setProductId(prodId);
         requestCartDto.setMerchantId("61eae2b14d72a238cfa62364");
         requestCartDto.setPrice(new Long(0));
+
         Call<Void> responsecart=iPostCartApi.addProduct(sharedPreferences.getString("em","default"),requestCartDto);
 
         responsecart.enqueue(new Callback<Void>() {
