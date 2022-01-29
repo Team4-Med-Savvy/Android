@@ -42,7 +42,7 @@ public class UserDto {
         this.password = password;
     }
 
-    public boolean isMerchant() {
+    public boolean getMerchant() {
         return merchant;
     }
 

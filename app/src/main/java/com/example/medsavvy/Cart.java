@@ -5,9 +5,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.medsavvy.RecycleView.adapter.CartAdapter;
@@ -24,7 +24,6 @@ import com.example.medsavvy.retrofit.networkmanager.OrderRetrofitBuilder;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -157,6 +156,10 @@ int count=0;
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         Toast.makeText(Cart.this,"successful",Toast.LENGTH_SHORT).show();
+                        findViewById(R.id.iv_home_profile).setOnClickListener(v -> {
+                            Intent i=new Intent(Cart.this, Thankyou.class);
+                            startActivity(i);
+                        });
                     }
 
                     @Override
@@ -164,6 +167,7 @@ int count=0;
                         Toast.makeText(Cart.this,"Fail",Toast.LENGTH_SHORT).show();
                     }
                 });
+
 
             }
 
