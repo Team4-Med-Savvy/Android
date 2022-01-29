@@ -7,16 +7,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.medsavvy.RecycleView.adapter.CartAdapter;
+import com.example.medsavvy.RecycleView.model.ApiCart;
 import com.example.medsavvy.RecycleView.model.ApiProduct;
+import com.example.medsavvy.retrofit.model.OrderedProducts;
+import com.example.medsavvy.retrofit.model.Orders;
 import com.example.medsavvy.retrofit.model.ResponseCartDto;
 import com.example.medsavvy.retrofit.model.ResponseCartProductDto;
 import com.example.medsavvy.retrofit.network.IPostCartApi;
+import com.example.medsavvy.retrofit.network.IPostOrderApi;
 import com.example.medsavvy.retrofit.networkmanager.CartRetrofilBuilder;
+import com.example.medsavvy.retrofit.networkmanager.OrderRetrofitBuilder;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -26,33 +34,47 @@ import retrofit2.Retrofit;
 
 public class Cart extends AppCompatActivity implements CartAdapter.IApiResponseClick {
 int count=0;
+    Double total_price=Double.parseDouble("0");
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
+//        List<ResponseCartProductDto> productlist=new ArrayList<>();
+
         //displayLocalRecyclerView();
         init();
+        findViewById(R.id.cart_proceed).setOnClickListener(v -> {
+            initorder();
+        });
     }
 
     private void init()
     {
+
         Retrofit retrofit= CartRetrofilBuilder.getInstance();
         IPostCartApi iPostCartApi=retrofit.create(IPostCartApi.class);
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.medsavvy", Context.MODE_PRIVATE);
+
         Call<ResponseCartDto> productresponse=iPostCartApi.getCartByEmail(sharedPreferences.getString("em","default"));
+
 
         productresponse.enqueue(new Callback<ResponseCartDto>() {
             @Override
             public void onResponse(Call<ResponseCartDto> call, Response<ResponseCartDto> response) {
-                List<ResponseCartProductDto> productlist=response.body().getProductList();
-                List<ApiProduct> userDataList=new ArrayList<>();
+                List<ResponseCartProductDto> productlist=new ArrayList<>();
+                productlist=response.body().getProductList();
+                List<ApiCart> userDataList=new ArrayList<>();
 
                 for(int i=0;i<productlist.size();i++)
                 {
-                    ApiProduct apiProduct=new ApiProduct();
+                    ApiCart apiProduct=new ApiCart();
                     apiProduct.setName(productlist.get(i).getTitle());
                     apiProduct.setImage(productlist.get(i).getImage());
                     apiProduct.setPrice(Double.parseDouble(productlist.get(i).getPrice().toString()));
+                    apiProduct.setQuantity(Long.valueOf(productlist.get(i).getQuantity()));
+                    total_price=total_price+Double.parseDouble(productlist.get(i).getPrice().toString());
                     userDataList.add(apiProduct);
                 }
 
@@ -61,22 +83,110 @@ int count=0;
                 LinearLayoutManager VerticalLayout= new LinearLayoutManager(Cart.this,LinearLayoutManager.VERTICAL,false);
                 recyclerView.setLayoutManager(VerticalLayout);
                 recyclerView.setAdapter(cartAdapter);
+
             }
 
             @Override
             public void onFailure(Call<ResponseCartDto> call, Throwable t) {
 
             }
+
         });
     }
+//    public Orders setorder(List<ResponseCartProductDto> productlist)
+//    {
+//     Orders orders=new Orders();
+//        SharedPreferences sharedPreferences = getSharedPreferences("com.example.medsavvy", Context.MODE_PRIVATE);
+//        orders.setUserId(sharedPreferences.getString("userId",""));
+//    orders.setTotal(Math.round(total_price));
+//     orders.setTimeStamp(Calendar.getInstance().getTime().toString());
+//     List<OrderedProducts> orderedProductlist=new ArrayList<>();
+//
+//     for(int i=0;i<productlist.size();i++){
+//         OrderedProducts orderedProducts=new OrderedProducts();
+//         orderedProducts.setMerchantId(productlist.get(i).getMerchantId());
+//         Long quant=Long.valueOf(productlist.get(i).getQuantity());
+//         orderedProducts.setQuantity(quant);
+//         orderedProducts.setAmount(productlist.get(i).getPrice()*quant);
+//         orderedProducts.setProductId(productlist.get(i).getProductId());
+//
+//         orderedProductlist.add(orderedProducts);
+//     }
+//        orders.setProducts(orderedProductlist);
+//
+//        return  orders;
+//    }
+    private void initorder(){
+        Retrofit retrofit= OrderRetrofitBuilder.getInstance();
+        IPostOrderApi iPostOrderApi=retrofit.create(IPostOrderApi.class);
+
+        //making order
+        Orders orders=new Orders();
+        SharedPreferences sharedPreferences = getSharedPreferences("com.example.medsavvy", Context.MODE_PRIVATE);
+        orders.setUserId(sharedPreferences.getString("userId",""));
+        orders.setTotal(Math.round(total_price));
+        orders.setTimeStamp(Calendar.getInstance().getTime().toString());
+
+
+        //making product list
+        Retrofit retrofit1= CartRetrofilBuilder.getInstance();
+        IPostCartApi iPostCartApi=retrofit1.create(IPostCartApi.class);
+        Call<ResponseCartDto> productresponse=iPostCartApi.getCartByEmail(sharedPreferences.getString("em","default"));
+
+        productresponse.enqueue(new Callback<ResponseCartDto>() {
+            @Override
+            public void onResponse(Call<ResponseCartDto> call, Response<ResponseCartDto> response) {
+                List<ResponseCartProductDto> productlist = response.body().getProductList();
+                List<OrderedProducts> orderedProductlist=new ArrayList<>();
+
+                for(int i=0;i<productlist.size();i++){
+                    OrderedProducts orderedProducts=new OrderedProducts();
+                    orderedProducts.setMerchantId(productlist.get(i).getMerchantId());
+                    Long quant=Long.valueOf(productlist.get(i).getQuantity());
+                    orderedProducts.setQuantity(quant);
+                    orderedProducts.setAmount(productlist.get(i).getPrice()*quant);
+                    orderedProducts.setProductId(productlist.get(i).getProductId());
+
+                    orderedProductlist.add(orderedProducts);
+                }
+                orders.setProducts(orderedProductlist);
+
+                Call<Void> order=iPostOrderApi.save(orders);
+
+                order.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        Toast.makeText(Cart.this,"successful",Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Toast.makeText(Cart.this,"Fail",Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseCartDto> call, Throwable t) {
+                Toast.makeText(Cart.this,"Fail Miserably",Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+
+
+
+    }
     private  void displayLocalRecyclerView(){
-        List<ApiProduct> userDataList=new ArrayList<>();
-        generateUserData(userDataList);
-        RecyclerView recyclerView=findViewById(R.id.recycle);
-        CartAdapter cartAdapter=new CartAdapter(userDataList,Cart.this);
-        LinearLayoutManager VerticalLayout= new LinearLayoutManager(Cart.this,LinearLayoutManager.VERTICAL,false);
-        recyclerView.setLayoutManager(VerticalLayout);
-        recyclerView.setAdapter(cartAdapter);
+//        List<ApiProduct> userDataList=new ArrayList<>();
+//        generateUserData(userDataList);
+//        RecyclerView recyclerView=findViewById(R.id.recycle);
+//        CartAdapter cartAdapter=new CartAdapter(userDataList,Cart.this);
+//        LinearLayoutManager VerticalLayout= new LinearLayoutManager(Cart.this,LinearLayoutManager.VERTICAL,false);
+//        recyclerView.setLayoutManager(VerticalLayout);
+//        recyclerView.setAdapter(cartAdapter);
     }
 
 
@@ -94,7 +204,7 @@ int count=0;
   }
 
     @Override
-    public void onUserClick(ApiProduct userDatamodel) {
+    public void onUserClick(ApiCart userDatamodel) {
         Toast.makeText(this, "You have purchased this" + userDatamodel, Toast.LENGTH_SHORT).show();
 
     }

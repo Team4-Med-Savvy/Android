@@ -140,19 +140,16 @@ public class Login extends AppCompatActivity {
         Retrofit retrofit= UserRetrofitBuilder.getInstance();
         IPostUserApi iPostUserApi=retrofit.create(IPostUserApi.class);
         Call<ResponseDto> response=iPostUserApi.generateToken(authDto);
-
-
+        SharedPreferences sharedPreferences = getSharedPreferences("com.example.medsavvy", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         response.enqueue(new Callback<ResponseDto>() {
             @Override
             public void onResponse(Call<ResponseDto> call, Response<ResponseDto> response) {
                 Toast.makeText(Login.this,"Success",Toast.LENGTH_SHORT).show();
-                SharedPreferences sharedPreferences = getSharedPreferences("com.example.medsavvy", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-
-
                 editor.putString("points", response.body().getPoints().toString());
                 editor.putString("name", response.body().getName());
                 editor.putString("em", response.body().getEmail());
+                editor.putString("userId", response.body().getId());
                 editor.apply();
                 Intent i = new Intent(Login.this, HomePage.class);
                 startActivity(i);

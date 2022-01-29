@@ -42,7 +42,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class ProductDetail extends AppCompatActivity implements RecommendAdapter.IApiResponseClick {
-    int count=0;
+    int count=1;
     String merchantName[] = {"India", "China", "australia", "Portugle", "America", "NewZealand"};
     String merchantDescription[] = {"India1", "China1", "australia", "Portugle", "America", "NewZealand"};
 
@@ -77,8 +77,7 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
         });
 
         findViewById(R.id.bn_add_to_cart).setOnClickListener(v -> {
-            init();
-        });
+            init();        });
 
         findViewById(R.id.bn_buy_now).setOnClickListener(v -> {
             init();
@@ -98,8 +97,9 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
         String prodId=intent.getExtras().getString("productId");
 
         requestCartDto.setProductId(prodId);
-        requestCartDto.setMerchantId("1");
+        requestCartDto.setMerchantId("61eae2b14d72a238cfa62364");
         requestCartDto.setPrice(new Long(0));
+
         Call<Void> responsecart=iPostCartApi.addProduct(sharedPreferences.getString("em","default"),requestCartDto);
 
         responsecart.enqueue(new Callback<Void>() {
@@ -123,20 +123,16 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
         IPostProductApi iPostProductApi=retrofit.create(IPostProductApi.class);
         String pid=getIntent().getExtras().getString("productId");
         Call<ResponseProductDto> productresponse=iPostProductApi.findmerchantlist(pid);
-
-        System.out.println(productresponse);
-
             productresponse.enqueue(new Callback<ResponseProductDto>() {
                 @Override
                 public void onResponse(Call<ResponseProductDto> call, Response<ResponseProductDto> response) {
+                    TextView decsrip=findViewById(R.id.tv_prod_descrip);
+                    decsrip.setText(response.body().getDescription());
                     ListView listView= (ListView)findViewById(R.id.id_list);
-                    System.out.println(response.body().getMerchantProductDetailDtos().get(0).getPrice());
-                    System.out.println(response.body().getMerchantProductDetailDtos().get(1).getMerchantId());
 
                     CustomAdapter customAdapter=new CustomAdapter(ProductDetail.this,response.body().getMerchantProductDetailDtos());
                     listView.setAdapter(customAdapter);
                 }
-
                 @Override
                 public void onFailure(Call<ResponseProductDto> call, Throwable t) {
                     Toast.makeText(ProductDetail.this,"Failure",Toast.LENGTH_SHORT).show();
