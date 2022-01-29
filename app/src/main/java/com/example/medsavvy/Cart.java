@@ -79,7 +79,7 @@ int count=0;
                 }
 
                 RecyclerView recyclerView=findViewById(R.id.recycle);
-                CartAdapter cartAdapter=new CartAdapter(userDataList,Cart.this);
+                CartAdapter cartAdapter=new CartAdapter(userDataList,Cart.this,retrofit,Cart.this);
                 LinearLayoutManager VerticalLayout= new LinearLayoutManager(Cart.this,LinearLayoutManager.VERTICAL,false);
                 recyclerView.setLayoutManager(VerticalLayout);
                 recyclerView.setAdapter(cartAdapter);
@@ -143,6 +143,10 @@ int count=0;
                     OrderedProducts orderedProducts=new OrderedProducts();
                     orderedProducts.setMerchantId(productlist.get(i).getMerchantId());
                     Long quant=Long.valueOf(productlist.get(i).getQuantity());
+//                    int cnt=sharedPreferences.getInt("count",0);
+//                    System.out.println("COUNT:"+cnt);
+//                    if(cnt>quant)
+//                        quant=Long.parseLong(cnt+ "");
                     orderedProducts.setQuantity(quant);
                     orderedProducts.setAmount(productlist.get(i).getPrice()*quant);
                     orderedProducts.setProductId(productlist.get(i).getProductId());
@@ -156,7 +160,7 @@ int count=0;
                 order.enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
-                        Toast.makeText(Cart.this,"succesfull",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Cart.this,"sucess",Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
