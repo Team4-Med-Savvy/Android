@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -24,7 +25,6 @@ import com.example.medsavvy.retrofit.networkmanager.OrderRetrofitBuilder;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -41,9 +41,7 @@ int count=0;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
-//        List<ResponseCartProductDto> productlist=new ArrayList<>();
 
-        //displayLocalRecyclerView();
         init();
         findViewById(R.id.cart_proceed).setOnClickListener(v -> {
             initorder();
@@ -70,16 +68,21 @@ int count=0;
                 for(int i=0;i<productlist.size();i++)
                 {
                     ApiCart apiProduct=new ApiCart();
+                    apiProduct.setId(productlist.get(i).getProductId());
                     apiProduct.setName(productlist.get(i).getTitle());
                     apiProduct.setImage(productlist.get(i).getImage());
                     apiProduct.setPrice(Double.parseDouble(productlist.get(i).getPrice().toString()));
                     apiProduct.setQuantity(Long.valueOf(productlist.get(i).getQuantity()));
-                    total_price=total_price+Double.parseDouble(productlist.get(i).getPrice().toString());
+                    apiProduct.setMerchantId(productlist.get(i).getMerchantId());
+                    Long Quantity=Long.valueOf(productlist.get(i).getQuantity());
+                    total_price=total_price+Quantity*Double.parseDouble(productlist.get(i).getPrice().toString());
                     userDataList.add(apiProduct);
                 }
 
+                TextView price=findViewById(R.id.totalprice_cart);
+                price.setText(total_price+"");
                 RecyclerView recyclerView=findViewById(R.id.recycle);
-                CartAdapter cartAdapter=new CartAdapter(userDataList,Cart.this,retrofit,Cart.this);
+                CartAdapter cartAdapter=new CartAdapter(userDataList,Cart.this,retrofit,iPostCartApi,Cart.this);
                 LinearLayoutManager VerticalLayout= new LinearLayoutManager(Cart.this,LinearLayoutManager.VERTICAL,false);
                 recyclerView.setLayoutManager(VerticalLayout);
                 recyclerView.setAdapter(cartAdapter);
@@ -93,29 +96,7 @@ int count=0;
 
         });
     }
-//    public Orders setorder(List<ResponseCartProductDto> productlist)
-//    {
-//     Orders orders=new Orders();
-//        SharedPreferences sharedPreferences = getSharedPreferences("com.example.medsavvy", Context.MODE_PRIVATE);
-//        orders.setUserId(sharedPreferences.getString("userId",""));
-//    orders.setTotal(Math.round(total_price));
-//     orders.setTimeStamp(Calendar.getInstance().getTime().toString());
-//     List<OrderedProducts> orderedProductlist=new ArrayList<>();
-//
-//     for(int i=0;i<productlist.size();i++){
-//         OrderedProducts orderedProducts=new OrderedProducts();
-//         orderedProducts.setMerchantId(productlist.get(i).getMerchantId());
-//         Long quant=Long.valueOf(productlist.get(i).getQuantity());
-//         orderedProducts.setQuantity(quant);
-//         orderedProducts.setAmount(productlist.get(i).getPrice()*quant);
-//         orderedProducts.setProductId(productlist.get(i).getProductId());
-//
-//         orderedProductlist.add(orderedProducts);
-//     }
-//        orders.setProducts(orderedProductlist);
-//
-//        return  orders;
-//    }
+
     private void initorder(){
         Retrofit retrofit= OrderRetrofitBuilder.getInstance();
         IPostOrderApi iPostOrderApi=retrofit.create(IPostOrderApi.class);
@@ -160,21 +141,25 @@ int count=0;
                 order.enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
-                        Toast.makeText(Cart.this,"sucess",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Cart.this,"successful",Toast.LENGTH_SHORT).show();
+
                     }
 
                     @Override
                     public void onFailure(Call<Void> call, Throwable t) {
-                        Toast.makeText(Cart.this,"Fail",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Cart.this,"Order Placed!",Toast.LENGTH_SHORT).show();
+
+                            Intent i=new Intent(Cart.this, Thankyou.class);
+                            startActivity(i);
+                            finish();
+
                     }
                 });
-
             }
 
             @Override
             public void onFailure(Call<ResponseCartDto> call, Throwable t) {
                 Toast.makeText(Cart.this,"Fail Miserably",Toast.LENGTH_SHORT).show();
-
             }
         });
 

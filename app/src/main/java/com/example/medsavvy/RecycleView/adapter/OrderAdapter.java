@@ -36,8 +36,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolderOr
     @Override
     public void onBindViewHolder(@NonNull ViewHolderOrder holder, int position) {
         ApiOrder apiorder = apiResponseList.get(position);
-        holder.tvorderId.setText(apiorder.getOrderid());
+        holder.tvorderId.setText(apiorder.getOrderid()+"");
         holder.tvPrice.setText(apiorder.getAmount()+"");
+        holder.tvdatePurchased.setText(apiorder.getDate());
         holder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

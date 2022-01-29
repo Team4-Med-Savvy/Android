@@ -47,15 +47,19 @@ public class Login extends AppCompatActivity {
 
         });
         findViewById(R.id.bn_login).setOnClickListener(view -> {
-
-                    initApi(generateRequest());
-                  //  Intent i;
+            boolean isAllFieldChecked=CheckAllFields();
+            if(isAllFieldChecked) {
+                initApi(generateRequest());
+                //  Intent i;
 //                    if (flag == 1) {
 
 //                    } else {
-                        //Toast.makeText(this, "Incorrect Credentials", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Incorrect Credentials", Toast.LENGTH_SHORT).show();
 //                    }
-
+                Intent k = new Intent(Login.this, HomePage.class);
+                startActivity(k);
+                finish();
+            }
 
         });
 
@@ -135,6 +139,22 @@ public class Login extends AppCompatActivity {
         return authDto;
 
     }
+    private boolean CheckAllFields() {
+        EditText etEmail = findViewById(R.id.login_email);
+        EditText etPassword = findViewById(R.id.login_password);
+
+        if (etPassword.length() == 0) {
+            etPassword.setError("This field is required");
+            return false;
+        }
+
+        if (etEmail.length() == 0) {
+            etEmail.setError("Email is required");
+            return false;
+        }
+        return true;
+    }
+
     private void initApi(AuthDto authDto)
     {
         Retrofit retrofit= UserRetrofitBuilder.getInstance();
@@ -152,8 +172,8 @@ public class Login extends AppCompatActivity {
                 editor.putString("userId", response.body().getId());
 
                 editor.apply();
-                Intent i = new Intent(Login.this, HomePage.class);
-                startActivity(i);
+//                Intent i = new Intent(Login.this, HomePage.class);
+//                startActivity(i);
                 System.out.println(response);
 
             }
