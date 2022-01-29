@@ -35,7 +35,6 @@ public class Products extends AppCompatActivity implements RecommendAdapter.IApi
 
     private void initApi(){
         Retrofit retrofit= ProductRetrofitBuilder.getInstance();
-
         IPostProductApi iPostProductApi=retrofit.create(IPostProductApi.class);
         Intent intent=getIntent();
         String cate= intent.getExtras().getString("category");
@@ -60,7 +59,6 @@ public class Products extends AppCompatActivity implements RecommendAdapter.IApi
                 LinearLayoutManager VerticalLayout= new LinearLayoutManager(Products.this,LinearLayoutManager.VERTICAL,false);
                 recyclerView.setLayoutManager(VerticalLayout);
                 recyclerView.setAdapter(recycleViewAdapter);
-
             }
 
             @Override

@@ -15,7 +15,7 @@ public class OrderRetrofitBuilder {
         if (instance == null) {
             synchronized (OrderRetrofitBuilder.class) {
                 if (instance == null) {
-                    instance = new Retrofit.Builder().baseUrl("http://10.177.1.115:8187/")
+                    instance = new Retrofit.Builder().baseUrl("http://10.177.1.70:8187/")
                             .addConverterFactory(GsonConverterFactory.create()).client(new OkHttpClient()).build();
                 }
             }
