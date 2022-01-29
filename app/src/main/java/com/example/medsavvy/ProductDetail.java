@@ -185,23 +185,25 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
         @Override
         public View getView(int i, View convertview, ViewGroup viewGroup) {
            // View v=convertview
-//            if(items.get(i)!=null)
-//            {
+            if(items.get(i)!=null)
+            {
                 try {
+                    for(int j=0;j<items.size();j++) {
 //                    vi=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 //                    v = vi.inflate(R.layout.custom_listview, null);
-                    convertview=getLayoutInflater().inflate(R.layout.custom_listview,null);
-                    TextView textView_name = (TextView) findViewById(R.id.li_name);
-                    TextView textView_price = (TextView) findViewById(R.id.li_price);
+                        convertview = getLayoutInflater().inflate(R.layout.custom_listview, null);
+                        TextView textView_name = (TextView) findViewById(R.id.li_name);
+                        TextView textView_price = (TextView) findViewById(R.id.li_price);
 
-                    textView_name.setText(items.get(i).getMerchantId());
-                    textView_price.setText((int) Math.round(items.get(i).getPrice())+"");
+                        textView_name.setText(items.get(j).getMerchantId());
+                        textView_price.setText((int) Math.round(items.get(j).getPrice()) + "");
+                    }
                 }catch (Exception e){
                     System.out.println(e.getMessage());
                 }
 
 
-//            }
+            }
 //            view=getLayoutInflater().inflate(R.layout.custom_listview,null);
 //            TextView textView_name=(TextView)view.findViewById(R.id.li_name);
 //            TextView textView_price=(TextView)view.findViewById(R.id.li_price);
