@@ -100,6 +100,7 @@ public class SignUp extends AppCompatActivity {
         userDto.setPoints(new Long(0));
         userDto.setUsername(etEmail.getText().toString());
         userDto.setEmail(etEmail.getText().toString());
+        userDto.setMerchant(false);
         return userDto;
    }
     private void initApi(UserDto userDto){

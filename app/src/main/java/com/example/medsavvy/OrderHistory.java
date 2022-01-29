@@ -6,30 +6,86 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TextView;
 
+import com.example.medsavvy.RecycleView.adapter.OrderAdapter;
+import com.example.medsavvy.RecycleView.adapter.OrderHistoryAdapter;
 import com.example.medsavvy.RecycleView.adapter.RecommendAdapter;
+import com.example.medsavvy.RecycleView.model.ApiOrderHist;
 import com.example.medsavvy.RecycleView.model.ApiProduct;
+import com.example.medsavvy.retrofit.model.OrderedProducts;
+import com.example.medsavvy.retrofit.model.ResponseOrderDto;
+import com.example.medsavvy.retrofit.network.IPostOrderApi;
+import com.example.medsavvy.retrofit.networkmanager.OrderRetrofitBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderHistory extends AppCompatActivity implements RecommendAdapter.IApiResponseClick {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
+public class OrderHistory extends AppCompatActivity implements OrderHistoryAdapter.IApiResponseClick {
+    TextView tvorderId,tvproductId,tvamount,tvquantity,tvmerchantId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_history);
-        displayLocalRecyclerView();
+//        displayLocalRecyclerView();
+        initorder();
+    }
+
+    private void initorder(){
+        Retrofit retrofit= OrderRetrofitBuilder.getInstance();
+        IPostOrderApi iPostOrderApi=retrofit.create(IPostOrderApi.class);
+        Intent intent=getIntent();
+        Long oid=intent.getExtras().getLong("orderid",0);
+        Call<List<ResponseOrderDto>> orderproduct=iPostOrderApi.findAnOrder(oid);
+
+        orderproduct.enqueue(new Callback<List<ResponseOrderDto>>() {
+            @Override
+            public void onResponse(Call<List<ResponseOrderDto>> call, Response<List<ResponseOrderDto>> response) {
+                List<ApiOrderHist> orderHists=new ArrayList<>();
+                List<ResponseOrderDto> responseOrderDtos=response.body();
+                System.out.println(response.body().get(0).getAmount());;
+
+                for(int i=0;i<responseOrderDtos.size();i++)
+                {
+                    ApiOrderHist apiOrderHist=new ApiOrderHist();
+                    apiOrderHist.setName(responseOrderDtos.get(i).getName());
+                    apiOrderHist.setImageUrl(responseOrderDtos.get(i).getImageUrl());
+                    apiOrderHist.setAmount(responseOrderDtos.get(i).getAmount());
+                    apiOrderHist.setQuantity(responseOrderDtos.get(i).getQuantity());
+                    apiOrderHist.setMerchantId(responseOrderDtos.get(i).getMerchantId());
+                    apiOrderHist.setProductId(responseOrderDtos.get(i).getProductId());
+
+                    orderHists.add(apiOrderHist);
+                }
+                RecyclerView recyclerView=findViewById(R.id.orderhistory_recycle);
+                OrderHistoryAdapter recycleViewAdapter=new OrderHistoryAdapter(orderHists,OrderHistory.this);
+                LinearLayoutManager HorizontalLayout= new LinearLayoutManager(OrderHistory.this,LinearLayoutManager.VERTICAL,false);
+
+                recyclerView.setLayoutManager(HorizontalLayout);
+                recyclerView.setAdapter(recycleViewAdapter);
+            }
+
+            @Override
+            public void onFailure(Call<List<ResponseOrderDto>> call, Throwable t) {
+
+            }
+        });
     }
     private  void displayLocalRecyclerView(){
-        List<ApiProduct> userDataList=new ArrayList<>();
-        generateUserData(userDataList);
-        RecyclerView recyclerView=findViewById(R.id.orderhistory_recycle);
-        RecommendAdapter recycleViewAdapter=new RecommendAdapter(userDataList,OrderHistory.this);
-        LinearLayoutManager HorizontalLayout= new LinearLayoutManager(OrderHistory.this,LinearLayoutManager.VERTICAL,false);
-
-        recyclerView.setLayoutManager(HorizontalLayout);
-        recyclerView.setAdapter(recycleViewAdapter);
+//        List<ApiProduct> userDataList=new ArrayList<>();
+//        generateUserData(userDataList);
+//        RecyclerView recyclerView=findViewById(R.id.orderhistory_recycle);
+//       // RecommendAdapter recycleViewAdapter=new RecommendAdapter(userDataList,OrderHistory.this);
+//        LinearLayoutManager HorizontalLayout= new LinearLayoutManager(OrderHistory.this,LinearLayoutManager.VERTICAL,false);
+//
+//        recyclerView.setLayoutManager(HorizontalLayout);
+//        recyclerView.setAdapter(recycleViewAdapter);
 
     }
     private void generateUserData(List<ApiProduct> userDataList) {
@@ -46,9 +102,9 @@ public class OrderHistory extends AppCompatActivity implements RecommendAdapter.
     }
 
     @Override
-    public void onUserClick(ApiProduct userDatamodel) {
-        Intent intent=new Intent(OrderHistory.this,ProductDetail.class);
-        intent.putExtra("imageUrl",userDatamodel.getImage());
-        startActivity(intent);
+    public void onUserClick(ApiOrderHist userDatamodel) {
+//        Intent intent=new Intent(OrderHistory.this,ProductDetail.class);
+//        intent.putExtra("imageUrl",userDatamodel.getImageUrl());
+//        startActivity(intent);
     }
 }
