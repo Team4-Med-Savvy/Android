@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -45,6 +46,8 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
     int count=1;
     String merchantName[] = {"India", "China", "australia", "Portugle", "America", "NewZealand"};
     String merchantDescription[] = {"India1", "China1", "australia", "Portugle", "America", "NewZealand"};
+    String merchid;
+    Double price;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +88,76 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
 
     }
 
+
+    private  void displayLocalRecyclerView(){
+
+        Retrofit retrofit= ProductRetrofitBuilder.getInstance();
+        IPostProductApi iPostProductApi=retrofit.create(IPostProductApi.class);
+        String pid=getIntent().getExtras().getString("productId");
+        Call<ResponseProductDto> productresponse=iPostProductApi.findmerchantlist(pid);
+            productresponse.enqueue(new Callback<ResponseProductDto>() {
+                @Override
+                public void onResponse(Call<ResponseProductDto> call, Response<ResponseProductDto> response) {
+                    TextView decsrip=findViewById(R.id.tv_prod_descrip);
+//                    decsrip.setText(response.body().getDescription());
+
+                    List<MerchantProductDetailDto> merchantProductDetailDtos=response.body().getMerchantProductDetailDtos();
+                    System.out.println(merchantProductDetailDtos.get(0).getMerchantId()+"Merchant here");
+                    Spinner spinnerMerchantList = findViewById(R.id.merchant_list);
+                    List<String> merchants=new ArrayList<String>();
+
+                    for (int i=0; i<merchantProductDetailDtos.size(); i++){
+                        MerchantProductDetailDto merchantDto = merchantProductDetailDtos.get(i);
+                        String merchantSpinnerDetails = "Merchant ID: "+merchantDto.getMerchantId()+", "+merchantDto.getPrice();
+                        merchants.add(merchantSpinnerDetails);
+                    }
+
+                    ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(ProductDetail.this, android.R.layout.simple_spinner_dropdown_item, merchants);
+                    spinnerMerchantList.setAdapter(stringArrayAdapter);
+
+//                    tvProductNameDetails.setText(response.body().getProductName());
+//                    tvProductDetailsDescription.setText(response.body().getDescription());
+//                    tvProductDetailsProductPrice.setText(response.body().getPrice()+"");
+//                    Glide.with(ivProductDetailsImage).load(response.body().getImage()).placeholder(R.drawable.logo_afa).into(ivProductDetailsImage);
+
+
+                    spinnerMerchantList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                            Toast.makeText(ProductDetail.this,"This is Working",Toast.LENGTH_SHORT).show();
+//                            TextView merchantId=findViewById(R.id.prod_li_name);
+                            merchid= merchantProductDetailDtos.get(i).getMerchantId();
+//                            merchantId.setText(s);
+
+                            TextView merchantPrice=findViewById(R.id.tv_prod_price);
+                            merchantPrice.setText(merchantProductDetailDtos.get(i).getPrice()+"");
+                            price=merchantProductDetailDtos.get(i).getPrice();
+//                            intentMerchantId = merchantList.get(i).getMerchantId();
+//                            currentMerchantQuantity = me.get(i).getQuantity();
+//                            Log.d("soham",intentMerchantId+"");
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+
+                        }
+                    });
+                }
+                @Override
+                public void onFailure(Call<ResponseProductDto> call, Throwable t) {
+                    Toast.makeText(ProductDetail.this,"Failure",Toast.LENGTH_SHORT).show();
+                }
+            });
+//
+//        ListView listView= (ListView)findViewById(R.id.id_list);
+//        CustomAdapter customAdapter=new CustomAdapter(ProductDetail.this,merchantid);
+//        listView.setAdapter(customAdapter);
+
+
+    }
+
+
     private void init()
     {
         Retrofit retrofit= CartRetrofilBuilder.getInstance();
@@ -95,8 +168,9 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
         String prodId=intent.getExtras().getString("productId");
 
         requestCartDto.setProductId(prodId);
-        requestCartDto.setMerchantId("61f4cb27d9f1054bc09615b7");
-        requestCartDto.setPrice(new Long(100));
+        requestCartDto.setMerchantId(merchid);
+        requestCartDto.setPrice(Math.round(price));
+        System.out.println("price here" + price);
 
         Call<Void> responsecart=iPostCartApi.addProduct(sharedPreferences.getString("em","default"),requestCartDto);
 
@@ -114,38 +188,7 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
             }
         });
 
-   }
-    private  void displayLocalRecyclerView(){
-
-        Retrofit retrofit= ProductRetrofitBuilder.getInstance();
-        IPostProductApi iPostProductApi=retrofit.create(IPostProductApi.class);
-        String pid=getIntent().getExtras().getString("productId");
-        Call<ResponseProductDto> productresponse=iPostProductApi.findmerchantlist(pid);
-            productresponse.enqueue(new Callback<ResponseProductDto>() {
-                @Override
-                public void onResponse(Call<ResponseProductDto> call, Response<ResponseProductDto> response) {
-                    TextView decsrip=findViewById(R.id.tv_prod_descrip);
-                    decsrip.setText(response.body().getDescription());
-                    ListView listView= (ListView)findViewById(R.id.id_list);
-
-                    CustomAdapter customAdapter=new CustomAdapter(ProductDetail.this,response.body().getMerchantProductDetailDtos());
-                    listView.setAdapter(customAdapter);
-                }
-                @Override
-                public void onFailure(Call<ResponseProductDto> call, Throwable t) {
-                    Toast.makeText(ProductDetail.this,"Failure",Toast.LENGTH_SHORT).show();
-                }
-            });
-//
-//        ListView listView= (ListView)findViewById(R.id.id_list);
-//        CustomAdapter customAdapter=new CustomAdapter(ProductDetail.this,merchantid);
-//        listView.setAdapter(customAdapter);
-
-
     }
-
-
-
     @Override
     public void onUserClick(ApiProduct userDatamodel) {
         Intent intent=new Intent(ProductDetail.this,ProductDetail.class);
@@ -156,14 +199,11 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
     class CustomAdapter extends ArrayAdapter<MerchantProductDetailDto>
     {
 
-        private List<MerchantProductDetailDto> items;
-        private Context context;
-        private LayoutInflater vi;
 
         public CustomAdapter(@NonNull Context context, @NonNull List<MerchantProductDetailDto> items) {
             super(context, 0, items);
-            this.context=context;
-            this.items=items;
+//            this.context=context;
+//            this.items=items;
 //            vi=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
@@ -184,32 +224,6 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
 
         @Override
         public View getView(int i, View convertview, ViewGroup viewGroup) {
-           // View v=convertview
-            if(items.get(i)!=null)
-            {
-                try {
-                    for(int j=0;j<items.size();j++) {
-//                    vi=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//                    v = vi.inflate(R.layout.custom_listview, null);
-                        convertview = getLayoutInflater().inflate(R.layout.custom_listview, null);
-                        TextView textView_name = (TextView) findViewById(R.id.li_name);
-                        TextView textView_price = (TextView) findViewById(R.id.li_price);
-
-                        textView_name.setText(items.get(j).getMerchantId());
-                        textView_price.setText((int) Math.round(items.get(j).getPrice()) + "");
-                    }
-                }catch (Exception e){
-                    System.out.println(e.getMessage());
-                }
-
-
-            }
-//            view=getLayoutInflater().inflate(R.layout.custom_listview,null);
-//            TextView textView_name=(TextView)view.findViewById(R.id.li_name);
-//            TextView textView_price=(TextView)view.findViewById(R.id.li_price);
-//
-//            textView_name.setText(items.get(i).getMerchantId());
-//            textView_price.setText((int)items.get(i).getPrice());
             return convertview;
         }
 

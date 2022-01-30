@@ -11,6 +11,8 @@ public class ApiProduct {
 
     }
 
+
+
     public String getId() {
         return id;
     }

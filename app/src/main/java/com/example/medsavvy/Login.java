@@ -170,6 +170,7 @@ public class Login extends AppCompatActivity {
                 editor.putString("name", response.body().getName());
                 editor.putString("em", response.body().getEmail());
                 editor.putString("userId", response.body().getId());
+
                 editor.apply();
 //                Intent i = new Intent(Login.this, HomePage.class);
 //                startActivity(i);

@@ -8,27 +8,49 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.medsavvy.Cart;
 import com.example.medsavvy.R;
 import com.example.medsavvy.RecycleView.model.ApiCart;
-import com.example.medsavvy.RecycleView.model.ApiProduct;
+import com.example.medsavvy.retrofit.model.ResponseCartDto;
+import com.example.medsavvy.retrofit.model.ResponseCartProductDto;
+import com.example.medsavvy.retrofit.network.IPostCartApi;
+import com.example.medsavvy.retrofit.networkmanager.CartRetrofilBuilder;
+import com.example.medsavvy.retrofit.model.RequestCartDto;
+
+import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolderCart> {
     int count;
+
     private final List<ApiCart> apiResponseList;
     private final IApiResponseClick mUserDataInterface;
-//    private final Retrofit retrofit;
-    public CartAdapter(List<ApiCart> apiResponseList, IApiResponseClick iApiResponseClick) {
+
+   private final Retrofit retrofit;
+   private final TextView totalamount;
+   private final IPostCartApi iPostCartApi;
+   private final Cart cart;
+
+    public CartAdapter(List<ApiCart> apiResponseList, IApiResponseClick iApiResponseClick,Retrofit retrofit,IPostCartApi iPostCartApi,Cart cart,TextView totalamount)
+    {
+        this.totalamount=totalamount;
         this.apiResponseList = apiResponseList;
         this.mUserDataInterface = iApiResponseClick;
+        this.retrofit=retrofit;
+        this.iPostCartApi=iPostCartApi;
+        this.cart=cart;
     }
 
     @NonNull
@@ -48,18 +70,86 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolderCart
         holder.display.setText(apiProduct.getQuantity().toString());
         count=Math.round(apiProduct.getQuantity());
         System.out.println(holder.tvName);
+
         holder.increment.setOnClickListener(v -> {
-            count++;
-            holder.display.setText(""+count);
+
+
+                Retrofit retrofit= CartRetrofilBuilder.getInstance();
+                IPostCartApi iPostCartApi=retrofit.create(IPostCartApi.class);
+                SharedPreferences sharedPreferences = cart.getSharedPreferences("com.example.medsavvy", Context.MODE_PRIVATE);
+
+            apiProduct.setQuantity(apiProduct.getQuantity()+1);
+            totalamount.setText(apiProduct.getQuantity()*apiProduct.getPrice()+"");
+            holder.display.setText(apiProduct.getQuantity()+"");
+
+            RequestCartDto requestCartDto=new RequestCartDto();
+            requestCartDto.setPrice(Math.round(apiProduct.getPrice()));
+            requestCartDto.setProductId(apiProduct.getId());
+            requestCartDto.setMerchantId(apiProduct.getMerchantId());
+            Call<Void> cartresponse=iPostCartApi.addProduct(sharedPreferences.getString("em","default"),requestCartDto);
+
+            cartresponse.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    Toast.makeText(cart,"quantity added",Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Toast.makeText(cart,"quanity update failed",Toast.LENGTH_SHORT).show();
+
+                }
+            });
         });
 
         holder.decrement.setOnClickListener(v -> {
-            count--;
-            if(count<0)count=0;
-            holder.display.setText(""+count);
+//            count--;
+//            if(count<0)count=0;
+//            holder.display.setText(""+count);
+
+            //if(apiProduct.getQuantity()==1)
+            if(apiProduct.getQuantity()==1)
+            {
+                Toast.makeText(cart,"Cannot remove the item",Toast.LENGTH_SHORT).show();
+                return;
+            }
+            apiProduct.setQuantity(apiProduct.getQuantity()-1);
+            totalamount.setText(apiProduct.getQuantity()*apiProduct.getPrice()+"");
+            holder.display.setText(apiProduct.getQuantity()+"");
+
+
+            Retrofit retrofit= CartRetrofilBuilder.getInstance();
+            IPostCartApi iPostCartApi=retrofit.create(IPostCartApi.class);
+            SharedPreferences sharedPreferences = cart.getSharedPreferences("com.example.medsavvy", Context.MODE_PRIVATE);
+
+
+            Call<Void> deleteprod=iPostCartApi.deleteProduct(sharedPreferences.getString("em",""),apiProduct.getId());
+
+            deleteprod.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    Toast.makeText(cart,"quantity decreased",Toast.LENGTH_SHORT).show();
+
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Toast.makeText(cart,"quantity decrease failed",Toast.LENGTH_SHORT).show();
+
+                }
+            });
+
+
+
+//
+//            SharedPreferences sharedPreferences = cart.getSharedPreferences("com.example.medsavvy", Context.MODE_PRIVATE);
+//            SharedPreferences.Editor editor = sharedPreferences.edit();
+//            editor.putInt("count",count);
+//            editor.apply();
         });
 
-        Glide.with(holder.ivProduct.getContext()).load("https://rukminim1.flixcart.com/image/416/416/j8osu4w0/chyawanprash/u/g/z/1-chyawanprash-patanjali-original-imaeymvf8tzsbnpz.jpeg?q=70").into(holder.ivProduct);
+        System.out.println(apiProduct.getImage()+"ImageHERE");
+        Glide.with(holder.ivProduct.getContext()).load(apiProduct.getImage()).into(holder.ivProduct);
         holder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

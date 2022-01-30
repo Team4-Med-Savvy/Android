@@ -68,19 +68,21 @@ int count=0;
                 for(int i=0;i<productlist.size();i++)
                 {
                     ApiCart apiProduct=new ApiCart();
+                    apiProduct.setId(productlist.get(i).getProductId());
                     apiProduct.setName(productlist.get(i).getTitle());
                     apiProduct.setImage(productlist.get(i).getImage());
                     apiProduct.setPrice(Double.parseDouble(productlist.get(i).getPrice().toString()));
                     apiProduct.setQuantity(Long.valueOf(productlist.get(i).getQuantity()));
+                    apiProduct.setMerchantId(productlist.get(i).getMerchantId());
                     Long Quantity=Long.valueOf(productlist.get(i).getQuantity());
                     total_price=total_price+Quantity*Double.parseDouble(productlist.get(i).getPrice().toString());
                     userDataList.add(apiProduct);
                 }
 
                 TextView price=findViewById(R.id.totalprice_cart);
-                price.setText(total_price+"");
+//                price.setText(total_price+"");
                 RecyclerView recyclerView=findViewById(R.id.recycle);
-                CartAdapter cartAdapter=new CartAdapter(userDataList,Cart.this);
+                CartAdapter cartAdapter=new CartAdapter(userDataList,Cart.this,retrofit,iPostCartApi,Cart.this,price);
                 LinearLayoutManager VerticalLayout= new LinearLayoutManager(Cart.this,LinearLayoutManager.VERTICAL,false);
                 recyclerView.setLayoutManager(VerticalLayout);
                 recyclerView.setAdapter(cartAdapter);
@@ -122,6 +124,10 @@ int count=0;
                     OrderedProducts orderedProducts=new OrderedProducts();
                     orderedProducts.setMerchantId(productlist.get(i).getMerchantId());
                     Long quant=Long.valueOf(productlist.get(i).getQuantity());
+//                    int cnt=sharedPreferences.getInt("count",0);
+//                    System.out.println("COUNT:"+cnt);
+//                    if(cnt>quant)
+//                        quant=Long.parseLong(cnt+ "");
                     orderedProducts.setQuantity(quant);
                     orderedProducts.setAmount(productlist.get(i).getPrice()*quant);
                     orderedProducts.setProductId(productlist.get(i).getProductId());
@@ -136,25 +142,24 @@ int count=0;
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         Toast.makeText(Cart.this,"successful",Toast.LENGTH_SHORT).show();
-                        findViewById(R.id.iv_home_profile).setOnClickListener(v -> {
-                            Intent i=new Intent(Cart.this, Thankyou.class);
-                            startActivity(i);
-                        });
+
                     }
 
                     @Override
                     public void onFailure(Call<Void> call, Throwable t) {
                         Toast.makeText(Cart.this,"Order Placed!",Toast.LENGTH_SHORT).show();
+
+                            Intent i=new Intent(Cart.this, Thankyou.class);
+                            startActivity(i);
+                            finish();
+
                     }
                 });
-
-
             }
 
             @Override
             public void onFailure(Call<ResponseCartDto> call, Throwable t) {
                 Toast.makeText(Cart.this,"Fail Miserably",Toast.LENGTH_SHORT).show();
-
             }
         });
 

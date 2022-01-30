@@ -96,16 +96,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_prod_descrip" />
 
+    <Spinner
+        android:id="@+id/merchant_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="80dp">
+
         <Button
             android:id="@+id/bn_add_to_cart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginLeft="40dp"
+            android:layout_weight="1"
             android:backgroundTint="@color/teal_700"
             android:text="Add To Cart"
             app:layout_constraintEnd_toEndOf="parent"
@@ -115,10 +123,10 @@
 
         <Button
             android:id="@+id/bn_buy_now"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="40dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="40dp"
             android:layout_weight="1"
             android:backgroundTint="@color/teal_700"
             android:text="Buy Now"
@@ -129,11 +137,28 @@
 
     </LinearLayout>
 
+    <!--    <TextView-->
+<!--        android:id="@+id/prod_li_name"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="20dp"-->
+<!--        android:layout_marginTop="15dp"-->
+<!--        android:text="Name"-->
+<!--        android:textSize="24sp"-->
 
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/id_list">
+<!--        />-->
 
-    </ListView>
+<!--    <TextView-->
+<!--        android:id="@+id/prod_li_price"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="20dp"-->
+<!--        android:layout_marginTop="15dp"-->
+<!--        android:text="Price"-->
+<!--        android:textSize="24sp" />-->
+
+
+
+
+
 </LinearLayout>
