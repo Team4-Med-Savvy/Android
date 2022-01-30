@@ -166,6 +166,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseDto> call, Response<ResponseDto> response) {
                 Toast.makeText(Login.this,"Success",Toast.LENGTH_SHORT).show();
+                editor.putBoolean("login",true);
                 editor.putString("points", response.body().getPoints().toString());
                 editor.putString("name", response.body().getName());
                 editor.putString("em", response.body().getEmail());

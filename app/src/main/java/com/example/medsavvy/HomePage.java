@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,10 +28,12 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class HomePage extends AppCompatActivity implements RecommendAdapter.IApiResponseClick{
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences sharedPreferences = getSharedPreferences("com.example.medsavvy", Context.MODE_PRIVATE);
+        Boolean userlogged=sharedPreferences.getBoolean("login",false);
+
         setContentView(R.layout.activity_home_page);
         initApi();
 
@@ -39,6 +43,13 @@ public class HomePage extends AppCompatActivity implements RecommendAdapter.IApi
         });
         findViewById(R.id.iv_home_cart).setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
+
+                if(userlogged==false)
+                {
+                    Toast.makeText(HomePage.this,"Cart Empty.Please Login first",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else
                 startActivity(new Intent(HomePage.this, Cart.class));
             }
         });
@@ -83,6 +94,13 @@ public class HomePage extends AppCompatActivity implements RecommendAdapter.IApi
         });
         findViewById(R.id.iv_cart_bottom).setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
+
+                if(userlogged==false)
+                {
+                    Toast.makeText(HomePage.this,"Cart Empty.Please Login first",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else
                 startActivity(new Intent(HomePage.this,Cart.class));
             }
         });findViewById(R.id.iv_profile_bottom).setOnClickListener(new View.OnClickListener(){

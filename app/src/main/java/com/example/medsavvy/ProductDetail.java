@@ -73,8 +73,19 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
         });
 
         findViewById(R.id.iv_home_cart).setOnClickListener(v -> {
+
+            SharedPreferences sharedPreferences = getSharedPreferences("com.example.medsavvy", Context.MODE_PRIVATE);
+            Boolean userlogged=sharedPreferences.getBoolean("login",false);
+
+            if(userlogged==false)
+            {
+                Toast.makeText(ProductDetail.this,"Cart Empty.Please Login first",Toast.LENGTH_SHORT).show();
+                return;
+            }
+            else{
             Intent i=new Intent(ProductDetail.this,Cart.class);
             startActivity(i);
+            }
         });
 
         findViewById(R.id.bn_add_to_cart).setOnClickListener(v -> {
@@ -103,6 +114,8 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
 
                     List<MerchantProductDetailDto> merchantProductDetailDtos=response.body().getMerchantProductDetailDtos();
                     System.out.println(merchantProductDetailDtos.get(0).getMerchantId()+"Merchant here");
+
+
                     Spinner spinnerMerchantList = findViewById(R.id.merchant_list);
                     List<String> merchants=new ArrayList<String>();
 
@@ -115,10 +128,7 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
                     ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(ProductDetail.this, android.R.layout.simple_spinner_dropdown_item, merchants);
                     spinnerMerchantList.setAdapter(stringArrayAdapter);
 
-//                    tvProductNameDetails.setText(response.body().getProductName());
-//                    tvProductDetailsDescription.setText(response.body().getDescription());
-//                    tvProductDetailsProductPrice.setText(response.body().getPrice()+"");
-//                    Glide.with(ivProductDetailsImage).load(response.body().getImage()).placeholder(R.drawable.logo_afa).into(ivProductDetailsImage);
+
 
 
                     spinnerMerchantList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -133,9 +143,6 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
                             TextView merchantPrice=findViewById(R.id.tv_prod_price);
                             merchantPrice.setText(merchantProductDetailDtos.get(i).getPrice()+"");
                             price=merchantProductDetailDtos.get(i).getPrice();
-//                            intentMerchantId = merchantList.get(i).getMerchantId();
-//                            currentMerchantQuantity = me.get(i).getQuantity();
-//                            Log.d("soham",intentMerchantId+"");
                         }
 
                         @Override
