@@ -46,6 +46,8 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
     int count=1;
     String merchantName[] = {"India", "China", "australia", "Portugle", "America", "NewZealand"};
     String merchantDescription[] = {"India1", "China1", "australia", "Portugle", "America", "NewZealand"};
+    String merchid;
+    Double price;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,36 +88,7 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
 
     }
 
-    private void init()
-    {
-        Retrofit retrofit= CartRetrofilBuilder.getInstance();
-        IPostCartApi iPostCartApi=retrofit.create(IPostCartApi.class);
-        RequestCartDto requestCartDto=new RequestCartDto();
 
-        SharedPreferences sharedPreferences = getSharedPreferences("com.example.medsavvy", Context.MODE_PRIVATE);        Intent intent=getIntent();
-        String prodId=intent.getExtras().getString("productId");
-
-        requestCartDto.setProductId(prodId);
-        requestCartDto.setMerchantId("61f4cb27d9f1054bc09615b7");
-        requestCartDto.setPrice(new Long(100));
-
-        Call<Void> responsecart=iPostCartApi.addProduct(sharedPreferences.getString("em","default"),requestCartDto);
-
-        responsecart.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                Toast.makeText(ProductDetail.this,"Added to cart",Toast.LENGTH_SHORT).show();
-
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(ProductDetail.this,"Failure",Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-   }
     private  void displayLocalRecyclerView(){
 
         Retrofit retrofit= ProductRetrofitBuilder.getInstance();
@@ -126,15 +99,16 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
                 @Override
                 public void onResponse(Call<ResponseProductDto> call, Response<ResponseProductDto> response) {
                     TextView decsrip=findViewById(R.id.tv_prod_descrip);
-                    decsrip.setText(response.body().getDescription());
+//                    decsrip.setText(response.body().getDescription());
 
                     List<MerchantProductDetailDto> merchantProductDetailDtos=response.body().getMerchantProductDetailDtos();
+                    System.out.println(merchantProductDetailDtos.get(0).getMerchantId()+"Merchant here");
                     Spinner spinnerMerchantList = findViewById(R.id.merchant_list);
-                    List<String> merchants=new ArrayList<>();
+                    List<String> merchants=new ArrayList<String>();
 
                     for (int i=0; i<merchantProductDetailDtos.size(); i++){
                         MerchantProductDetailDto merchantDto = merchantProductDetailDtos.get(i);
-                        String merchantSpinnerDetails = "Merchant ID: "+merchantDto.getMerchantId()+",     Price Offered: "+merchantDto.getPrice();
+                        String merchantSpinnerDetails = "Merchant ID: "+merchantDto.getMerchantId()+", "+merchantDto.getPrice();
                         merchants.add(merchantSpinnerDetails);
                     }
 
@@ -146,18 +120,19 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
 //                    tvProductDetailsProductPrice.setText(response.body().getPrice()+"");
 //                    Glide.with(ivProductDetailsImage).load(response.body().getImage()).placeholder(R.drawable.logo_afa).into(ivProductDetailsImage);
 
-                    spinnerMerchantList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                        }
-                    });
 
                     spinnerMerchantList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
                         @Override
                         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                            tvProductDetailsDescription.setText(merchants.get(i).);
-//                            tvProductDetailsProductPrice.setText(merchants.get(i).getPrice()+"");
+//                            Toast.makeText(ProductDetail.this,"This is Working",Toast.LENGTH_SHORT).show();
+//                            TextView merchantId=findViewById(R.id.prod_li_name);
+                            merchid= merchantProductDetailDtos.get(i).getMerchantId();
+//                            merchantId.setText(s);
+
+                            TextView merchantPrice=findViewById(R.id.tv_prod_price);
+                            merchantPrice.setText(merchantProductDetailDtos.get(i).getPrice()+"");
+                            price=merchantProductDetailDtos.get(i).getPrice();
 //                            intentMerchantId = merchantList.get(i).getMerchantId();
 //                            currentMerchantQuantity = me.get(i).getQuantity();
 //                            Log.d("soham",intentMerchantId+"");
@@ -183,7 +158,37 @@ public class ProductDetail extends AppCompatActivity implements RecommendAdapter
     }
 
 
+    private void init()
+    {
+        Retrofit retrofit= CartRetrofilBuilder.getInstance();
+        IPostCartApi iPostCartApi=retrofit.create(IPostCartApi.class);
+        RequestCartDto requestCartDto=new RequestCartDto();
 
+        SharedPreferences sharedPreferences = getSharedPreferences("com.example.medsavvy", Context.MODE_PRIVATE);        Intent intent=getIntent();
+        String prodId=intent.getExtras().getString("productId");
+
+        requestCartDto.setProductId(prodId);
+        requestCartDto.setMerchantId(merchid);
+        requestCartDto.setPrice(Math.round(price));
+        System.out.println("price here" + price);
+
+        Call<Void> responsecart=iPostCartApi.addProduct(sharedPreferences.getString("em","default"),requestCartDto);
+
+        responsecart.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                Toast.makeText(ProductDetail.this,"Added to cart",Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(ProductDetail.this,"Failure",Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+    }
     @Override
     public void onUserClick(ApiProduct userDatamodel) {
         Intent intent=new Intent(ProductDetail.this,ProductDetail.class);

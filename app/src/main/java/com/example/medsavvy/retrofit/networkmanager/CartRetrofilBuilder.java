@@ -15,7 +15,7 @@ public class CartRetrofilBuilder {
         if (instance == null) {
             synchronized (CartRetrofilBuilder.class) {
                 if (instance == null) {
-                    instance = new Retrofit.Builder().baseUrl("http://10.177.1.115:8186/")
+                    instance = new Retrofit.Builder().baseUrl("http://10.177.1.70:8186/")
                             .addConverterFactory(GsonConverterFactory.create()).client(new OkHttpClient()).build();
                 }
             }

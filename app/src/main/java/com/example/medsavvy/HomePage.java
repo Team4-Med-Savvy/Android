@@ -46,34 +46,34 @@ public class HomePage extends AppCompatActivity implements RecommendAdapter.IApi
             public void onClick(View v){
 
                 Intent intent=new Intent(HomePage.this,Products.class);
-                intent.putExtra("category","Ayurvedic_care");
+                intent.putExtra("category","Ayurvedic care");
                 startActivity(intent);               }
         });
         findViewById(R.id.iv_covid).setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 Intent intent=new Intent(HomePage.this,Products.class);
-                intent.putExtra("category","Covid_essential");
+                intent.putExtra("category","Covid essentials");
                 startActivity(intent);            }
         });
         findViewById(R.id.iv_surgical).setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
 
                 Intent intent=new Intent(HomePage.this,Products.class);
-                intent.putExtra("category","Surgicals");
+                intent.putExtra("category","Surgical");
                 startActivity(intent);               }
         });
         findViewById(R.id.iv_skin).setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
 
                 Intent intent=new Intent(HomePage.this,Products.class);
-                intent.putExtra("category","Skin_care");
+                intent.putExtra("category","Skin care");
                 startActivity(intent);               }
         });
         findViewById(R.id.iv_pet).setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
 
                 Intent intent=new Intent(HomePage.this,Products.class);
-                intent.putExtra("category","Personal_care");
+                intent.putExtra("category","Pet care");
                 startActivity(intent);               }
         });
         findViewById(R.id.iv_home_bottom).setOnClickListener(new View.OnClickListener(){
